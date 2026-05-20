@@ -1,0 +1,6 @@
+{
+  "name": "Kapandula Group",
+  "description": "Website institucional multi-marca premium do Kapandula Group em Luanda, Angola — Hotel, Eventos, Ginásio e Barbearia.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
