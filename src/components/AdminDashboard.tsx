@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import type { FormEvent } from 'react';
-import { CheckCircle, Edit3, LogOut, Plus, Save, Settings, Star, Trash2, X } from 'lucide-react';
+import { CheckCircle, Edit3, ExternalLink, LogOut, Plus, Save, Settings, Star, Trash2, X } from 'lucide-react';
 import type { ServiceDetailItem, UpcomingEventItem, TestimonialItem, TikTokVideoItem } from '../types';
 import { BRANDS } from '../data';
 
@@ -88,6 +88,8 @@ export default function AdminDashboard({
 
   const [whatsappDraft, setWhatsAppDraft] = useState({ ...whatsappConfig });
   const [savedMessage, setSavedMessage] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [exportMessage, setExportMessage] = useState<string | null>(null);
 
   const activeCount = useMemo(() => {
     switch (activeTab) {
@@ -98,6 +100,129 @@ export default function AdminDashboard({
       default: return 0;
     }
   }, [activeTab, events.length, services.length, testimonials.length, tiktokVideos.length]);
+
+  const activeItems = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
+
+    const matches = (value: string | number | undefined) =>
+      String(value || '').toLowerCase().includes(query);
+
+    if (!query) {
+      switch (activeTab) {
+        case 'events': return events;
+        case 'services': return services;
+        case 'testimonials': return testimonials;
+        case 'videos': return tiktokVideos;
+        default: return [];
+      }
+    }
+
+    switch (activeTab) {
+      case 'events':
+        return events.filter((item) =>
+          matches(item.title) || matches(item.location) || matches(item.description) || matches(item.status)
+        );
+      case 'services':
+        return services.filter((item) =>
+          matches(item.title) || matches(item.subtitle) || matches(item.description) || matches(BRANDS.find((brand) => brand.id === item.brandId)?.name)
+        );
+      case 'testimonials':
+        return testimonials.filter((item) =>
+          matches(item.name) || matches(item.role) || matches(item.comment) || matches(item.brandTarget)
+        );
+      case 'videos':
+        return tiktokVideos.filter((item) =>
+          matches(item.title) || matches(item.videoUrl) || matches(item.thumbnailUrl) || matches(item.views) || matches(item.likes)
+        );
+      default:
+        return [];
+    }
+  }, [activeTab, searchQuery, events, services, testimonials, tiktokVideos]);
+
+  const formatCsvValue = (value: string | number | undefined) => `"${String(value || '').replace(/"/g, '""')}"`;
+
+  const downloadCsv = (headers: string[], rows: string[][], fileName: string) => {
+    const csv = [headers.join(','), ...rows.map((row) => row.join(','))].join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = fileName;
+    anchor.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const handleExport = () => {
+    if (activeItems.length === 0) {
+      setExportMessage('Nenhum item para exportar.');
+      return;
+    }
+
+    setExportMessage(null);
+    let headers: string[] = [];
+    let rows: string[][] = [];
+    let fileName = `kapandula-${activeTab}.csv`;
+
+    if (activeTab === 'events') {
+      headers = ['ID', 'Título', 'Data', 'Hora', 'Localização', 'Estado', 'Descrição', 'Imagem'];
+      rows = activeItems.map((item) => [
+        formatCsvValue(item.id),
+        formatCsvValue(item.title),
+        formatCsvValue(item.date),
+        formatCsvValue(item.time),
+        formatCsvValue(item.location),
+        formatCsvValue(item.status),
+        formatCsvValue(item.description),
+        formatCsvValue(item.imageUrl),
+      ]);
+    }
+
+    if (activeTab === 'services') {
+      headers = ['ID', 'Marca', 'Título', 'Subtítulo', 'Descrição', 'Recursos', 'Preço', 'Imagem'];
+      rows = activeItems.map((item) => [
+        formatCsvValue(item.id),
+        formatCsvValue(BRANDS.find((brand) => brand.id === item.brandId)?.name),
+        formatCsvValue(item.title),
+        formatCsvValue(item.subtitle),
+        formatCsvValue(item.description),
+        formatCsvValue(Array.isArray(item.features) ? item.features.join(' | ') : item.features),
+        formatCsvValue(item.pricingRange),
+        formatCsvValue(item.imageUrl),
+      ]);
+    }
+
+    if (activeTab === 'testimonials') {
+      headers = ['ID', 'Nome', 'Cargo', 'Estrelas', 'Comentário', 'Marca Associada', 'Avatar'];
+      rows = activeItems.map((item) => [
+        formatCsvValue(item.id),
+        formatCsvValue(item.name),
+        formatCsvValue(item.role),
+        formatCsvValue(item.stars),
+        formatCsvValue(item.comment),
+        formatCsvValue(item.brandTarget),
+        formatCsvValue(item.avatarText),
+      ]);
+    }
+
+    if (activeTab === 'videos') {
+      headers = ['ID', 'Título', 'Visualizações', 'Likes', 'Miniatura', 'URL do Vídeo'];
+      rows = activeItems.map((item) => [
+        formatCsvValue(item.id),
+        formatCsvValue(item.title),
+        formatCsvValue(item.views),
+        formatCsvValue(item.likes),
+        formatCsvValue(item.thumbnailUrl),
+        formatCsvValue(item.videoUrl),
+      ]);
+    }
+
+    downloadCsv(headers, rows, fileName);
+    setExportMessage(`Exportado ${activeItems.length} item(s) como CSV.`);
+  };
+
+  const openPublicPreview = () => {
+    window.open('/', '_blank');
+  };
 
   const openEditor = (kind: AdminTab, mode: 'add' | 'edit', item?: Record<string, any>) => {
     setActiveTab(kind);
@@ -225,24 +350,92 @@ export default function AdminDashboard({
             </aside>
 
             <main className="space-y-6">
-              <div className="flex flex-col gap-4 rounded-3xl border border-neutral-800 bg-black-card p-5 md:flex-row md:items-center md:justify-between">
-                <div>
-                  <p className="text-xs uppercase tracking-[0.25em] text-gold font-bold">Gestão</p>
-                  <h2 className="mt-2 text-2xl font-bold text-white-warm">{activeTab === 'events' && 'Eventos'}{activeTab === 'services' && 'Serviços'}{activeTab === 'videos' && 'Vídeos'}{activeTab === 'testimonials' && 'Depoimentos'}{activeTab === 'settings' && 'Configurações'}</h2>
+              <div className="space-y-4 rounded-3xl border border-neutral-800 bg-black-card p-5">
+                <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.25em] text-gold font-bold">Gestão</p>
+                    <h2 className="mt-2 text-2xl font-bold text-white-warm">{activeTab === 'events' && 'Eventos'}{activeTab === 'services' && 'Serviços'}{activeTab === 'videos' && 'Vídeos'}{activeTab === 'testimonials' && 'Depoimentos'}{activeTab === 'settings' && 'Configurações'}</h2>
+                    <p className="mt-2 text-sm text-neutral-400">Filtre, exporte e edite conteúdo com precisão profissional.</p>
+                  </div>
+
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                    <button
+                      type="button"
+                      onClick={openPublicPreview}
+                      className="inline-flex items-center gap-2 rounded-2xl border border-neutral-700 bg-neutral-950 px-4 py-3 text-sm font-semibold text-neutral-200 hover:bg-neutral-900 transition-all"
+                    >
+                      <ExternalLink className="w-4 h-4" /> Ver Prévia
+                    </button>
+                    {activeTab !== 'settings' && (
+                      <button
+                        type="button"
+                        onClick={() => openEditor(activeTab, 'add')}
+                        className="inline-flex items-center gap-2 rounded-2xl bg-gold px-5 py-3 text-sm font-bold uppercase tracking-[0.15em] text-black-deep hover:bg-[#ffdf7f] transition-all"
+                      >
+                        <Plus className="w-4 h-4" /> Adicionar
+                      </button>
+                    )}
+                  </div>
                 </div>
-                {activeTab !== 'settings' && (
-                  <button
-                    type="button"
-                    onClick={() => openEditor(activeTab, 'add')}
-                    className="inline-flex items-center gap-2 rounded-2xl bg-gold px-5 py-3 text-sm font-bold uppercase tracking-[0.15em] text-black-deep hover:bg-[#ffdf7f] transition-all"
-                  >
-                    <Plus className="w-4 h-4" /> Adicionar
-                  </button>
-                )}
+
+                <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+                  <div className="rounded-3xl border border-neutral-800 bg-black-deep p-4">
+                    <p className="text-xs uppercase tracking-[0.25em] text-gold font-semibold">Itens Ativos</p>
+                    <p className="mt-3 text-3xl font-bold text-white-warm">{activeCount}</p>
+                    <p className="text-sm text-neutral-400 mt-1">Total de itens na aba atual.</p>
+                  </div>
+                  <div className="rounded-3xl border border-neutral-800 bg-black-deep p-4">
+                    <p className="text-xs uppercase tracking-[0.25em] text-gold font-semibold">Resultados</p>
+                    <p className="mt-3 text-3xl font-bold text-white-warm">{activeItems.length}</p>
+                    <p className="text-sm text-neutral-400 mt-1">Itens correspondentes à pesquisa.</p>
+                  </div>
+                  <div className="rounded-3xl border border-neutral-800 bg-black-deep p-4">
+                    <p className="text-xs uppercase tracking-[0.25em] text-gold font-semibold">Armazenamento</p>
+                    <p className="mt-3 text-3xl font-bold text-white-warm">{new Date().toLocaleDateString('pt-PT')}</p>
+                    <p className="text-sm text-neutral-400 mt-1">Data da última sessão administrativa.</p>
+                  </div>
+                  <div className="rounded-3xl border border-neutral-800 bg-black-deep p-4">
+                    <p className="text-xs uppercase tracking-[0.25em] text-gold font-semibold">Entrega</p>
+                    <p className="mt-3 text-3xl font-bold text-white-warm">CSV</p>
+                    <p className="text-sm text-neutral-400 mt-1">Exportações prontas para relatórios.</p>
+                  </div>
+                </div>
               </div>
 
-              {savedMessage && (
-                <div className="rounded-3xl border border-emerald-500/20 bg-emerald-500/10 p-4 text-sm text-emerald-200">{savedMessage}</div>
+              <div className="flex flex-col gap-3 rounded-3xl border border-neutral-800 bg-black-card p-5 md:flex-row md:items-center md:justify-between">
+                <div className="relative w-full md:w-2/3">
+                  <label className="sr-only" htmlFor="admin-search">Pesquisar</label>
+                  <input
+                    id="admin-search"
+                    value={searchQuery}
+                    onChange={(event) => setSearchQuery(event.target.value)}
+                    placeholder="Pesquisar por título, descrição, marca ou cliente..."
+                    className="w-full rounded-2xl border border-neutral-800 bg-black-deep px-4 py-3 pr-12 text-sm text-white-warm outline-none focus:border-gold"
+                  />
+                  <Search className="absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-500" />
+                </div>
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                  <button
+                    type="button"
+                    onClick={handleExport}
+                    className="inline-flex items-center gap-2 rounded-2xl bg-gold px-4 py-3 text-sm font-bold uppercase tracking-[0.15em] text-black-deep hover:bg-[#ffdf7f] transition-all"
+                  >
+                    <Save className="w-4 h-4" /> Exportar CSV
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setSearchQuery('')}
+                    className="inline-flex items-center gap-2 rounded-2xl border border-neutral-700 bg-neutral-950 px-4 py-3 text-sm font-semibold text-neutral-200 hover:bg-neutral-900 transition-all"
+                  >
+                    Limpar filtro
+                  </button>
+                </div>
+              </div>
+
+              {(savedMessage || exportMessage) && (
+                <div className="rounded-3xl border border-emerald-500/20 bg-emerald-500/10 p-4 text-sm text-emerald-200">
+                  {exportMessage || savedMessage}
+                </div>
               )}
 
               {activeTab === 'events' && (
@@ -251,7 +444,7 @@ export default function AdminDashboard({
                     <div className="rounded-3xl border border-neutral-800 bg-black-deep p-6 text-neutral-400">Nenhum evento registado ainda.</div>
                   ) : (
                     <div className="space-y-3">
-                      {events.map((event) => (
+                      {activeItems.map((event) => (
                         <div key={event.id} className="rounded-3xl border border-neutral-800 bg-black-deep p-5 sm:flex sm:items-center sm:justify-between">
                           <div>
                             <p className="text-xs uppercase tracking-[0.3em] text-gold">{event.status}</p>
@@ -279,7 +472,7 @@ export default function AdminDashboard({
                     <div className="rounded-3xl border border-neutral-800 bg-black-deep p-6 text-neutral-400">Nenhum serviço registado ainda.</div>
                   ) : (
                     <div className="grid gap-4">
-                      {services.map((service) => (
+                      {activeItems.map((service) => (
                         <div key={service.id} className="rounded-3xl border border-neutral-800 bg-black-deep p-5 sm:flex sm:items-center sm:justify-between">
                           <div>
                             <p className="text-xs uppercase tracking-[0.3em] text-gold">{BRANDS.find((brand) => brand.id === service.brandId)?.name || service.brandId}</p>
@@ -307,7 +500,7 @@ export default function AdminDashboard({
                     <div className="rounded-3xl border border-neutral-800 bg-black-deep p-6 text-neutral-400">Nenhum vídeo registado ainda.</div>
                   ) : (
                     <div className="grid gap-4">
-                      {tiktokVideos.map((video) => (
+                      {activeItems.map((video) => (
                         <div key={video.id} className="rounded-3xl border border-neutral-800 bg-black-deep p-5 sm:flex sm:items-center sm:justify-between">
                           <div>
                             <p className="text-xs uppercase tracking-[0.3em] text-gold">{video.views} visualizações</p>
@@ -335,7 +528,7 @@ export default function AdminDashboard({
                     <div className="rounded-3xl border border-neutral-800 bg-black-deep p-6 text-neutral-400">Nenhum depoimento registado ainda.</div>
                   ) : (
                     <div className="grid gap-4">
-                      {testimonials.map((item) => (
+                      {activeItems.map((item) => (
                         <div key={item.id} className="rounded-3xl border border-neutral-800 bg-black-deep p-5 sm:flex sm:items-center sm:justify-between">
                           <div>
                             <p className="text-xs uppercase tracking-[0.3em] text-gold">{item.brandTarget}</p>
