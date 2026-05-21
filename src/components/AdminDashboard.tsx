@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import type { FormEvent } from 'react';
-import { CheckCircle, Edit3, ExternalLink, LogOut, Plus, Save, Settings, Star, Trash2, X } from 'lucide-react';
+import { CheckCircle, Edit3, ExternalLink, LogOut, Plus, Save, Search, Settings, Star, Trash2, X } from 'lucide-react';
 import type { ServiceDetailItem, UpcomingEventItem, TestimonialItem, TikTokVideoItem } from '../types';
 import { BRANDS } from '../data';
 
