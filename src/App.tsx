@@ -20,11 +20,14 @@ import {
   ChevronRight
 } from 'lucide-react';
 import { BRANDS, SERVICES, UPCOMING_EVENTS, TESTIMONIALS, TIKTOK_VIDEOS, WHATSAPP_CONFIG } from './data';
+import type { ServiceDetailItem, UpcomingEventItem, TestimonialItem, TikTokVideoItem } from './types';
 import BookingFlow from './components/BookingFlow';
 import WhatsAppFloat from './components/WhatsAppFloat';
 import HeroSection from './components/HeroSection';
 import QuickNav from './components/QuickNav';
 import KLogo from './components/KLogo';
+import AdminLoginModal from './components/AdminLoginModal';
+import AdminDashboard from './components/AdminDashboard';
 
 
 export default function App() {
@@ -45,6 +48,109 @@ export default function App() {
 
   // Success toast state
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  const [events, setEvents] = useState<UpcomingEventItem[]>([]);
+  const [services, setServices] = useState<ServiceDetailItem[]>([]);
+  const [testimonials, setTestimonials] = useState<TestimonialItem[]>([]);
+  const [tiktokVideos, setTiktokVideos] = useState<TikTokVideoItem[]>([]);
+  const [whatsappConfig, setWhatsAppConfigState] = useState<typeof WHATSAPP_CONFIG>(WHATSAPP_CONFIG);
+
+  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
+  const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
+  const [isAdminDashboardOpen, setIsAdminDashboardOpen] = useState(false);
+
+  const ADMIN_STORAGE_KEY = 'kapandula_admin_logged_in';
+  const EVENTS_KEY = 'kapandula_events';
+  const SERVICES_KEY = 'kapandula_services';
+  const TESTIMONIALS_KEY = 'kapandula_testimonials';
+  const TIKTOK_KEY = 'kapandula_tiktok_videos';
+  const WHATSAPP_KEY = 'kapandula_whatsapp_config';
+
+  useEffect(() => {
+    const loadFromStorage = <T,>(key: string, fallback: T): T => {
+      try {
+        const saved = window.localStorage.getItem(key);
+        return saved ? (JSON.parse(saved) as T) : fallback;
+      } catch {
+        return fallback;
+      }
+    };
+
+    setEvents(loadFromStorage(EVENTS_KEY, UPCOMING_EVENTS));
+    setServices(loadFromStorage(SERVICES_KEY, SERVICES));
+    setTestimonials(loadFromStorage(TESTIMONIALS_KEY, TESTIMONIALS));
+    setTiktokVideos(loadFromStorage(TIKTOK_KEY, TIKTOK_VIDEOS));
+    setWhatsAppConfigState(loadFromStorage(WHATSAPP_KEY, WHATSAPP_CONFIG));
+
+    const adminFlag = window.sessionStorage.getItem(ADMIN_STORAGE_KEY) === 'true' || window.localStorage.getItem(ADMIN_STORAGE_KEY) === 'true';
+    setIsAdminLoggedIn(adminFlag);
+  }, []);
+
+  const saveToStorage = <T,>(key: string, data: T) => {
+    try {
+      window.localStorage.setItem(key, JSON.stringify(data));
+    } catch {
+      // Ignore storage failures
+    }
+  };
+
+  const handleSaveEvents = (nextEvents: UpcomingEventItem[]) => {
+    setEvents(nextEvents);
+    saveToStorage(EVENTS_KEY, nextEvents);
+  };
+
+  const handleSaveServices = (nextServices: ServiceDetailItem[]) => {
+    setServices(nextServices);
+    saveToStorage(SERVICES_KEY, nextServices);
+  };
+
+  const handleSaveTestimonials = (nextTestimonials: TestimonialItem[]) => {
+    setTestimonials(nextTestimonials);
+    saveToStorage(TESTIMONIALS_KEY, nextTestimonials);
+  };
+
+  const handleSaveTikTokVideos = (nextVideos: TikTokVideoItem[]) => {
+    setTiktokVideos(nextVideos);
+    saveToStorage(TIKTOK_KEY, nextVideos);
+  };
+
+  const handleSaveWhatsAppConfig = (nextConfig: typeof WHATSAPP_CONFIG) => {
+    setWhatsAppConfigState(nextConfig);
+    saveToStorage(WHATSAPP_KEY, nextConfig);
+  };
+
+  const handleAdminAccess = () => {
+    if (isAdminLoggedIn) {
+      setIsAdminDashboardOpen(true);
+      return;
+    }
+    setIsAdminModalOpen(true);
+  };
+
+  const handleLoginSuccess = () => {
+    setIsAdminLoggedIn(true);
+    setIsAdminModalOpen(false);
+    setIsAdminDashboardOpen(true);
+    try {
+      window.sessionStorage.setItem(ADMIN_STORAGE_KEY, 'true');
+      window.localStorage.setItem(ADMIN_STORAGE_KEY, 'true');
+    } catch {
+      // ignore
+    }
+    triggerToast('Bem-vindo ao painel administrativo!');
+  };
+
+  const handleLogout = () => {
+    setIsAdminLoggedIn(false);
+    setIsAdminDashboardOpen(false);
+    try {
+      window.sessionStorage.removeItem(ADMIN_STORAGE_KEY);
+      window.localStorage.removeItem(ADMIN_STORAGE_KEY);
+    } catch {
+      // ignore
+    }
+    triggerToast('Sessão administrativa encerrada.');
+  };
 
   const servicesSectionRef = useRef<HTMLDivElement>(null);
   const eventsSectionRef = useRef<HTMLDivElement>(null);
@@ -161,7 +267,7 @@ export default function App() {
           {/* Right Action buttons */}
           <div className="hidden md:flex items-center gap-4">
             <button 
-              onClick={() => triggerToast('Portal de Clientes Kapandula — Brevemente Disponível!')}
+              onClick={handleAdminAccess}
               className="text-xs font-bold uppercase tracking-widest text-neutral-300 hover:text-gold px-4 py-2 transition-colors cursor-pointer border border-transparent"
             >
               Entrar
@@ -184,6 +290,29 @@ export default function App() {
           </button>
         </div>
       </nav>
+
+      <AdminLoginModal
+        isOpen={isAdminModalOpen}
+        onClose={() => setIsAdminModalOpen(false)}
+        onLoginSuccess={handleLoginSuccess}
+      />
+
+      {isAdminDashboardOpen && (
+        <AdminDashboard
+          events={events}
+          services={services}
+          testimonials={testimonials}
+          tiktokVideos={tiktokVideos}
+          whatsappConfig={whatsappConfig}
+          onClose={() => setIsAdminDashboardOpen(false)}
+          onLogout={handleLogout}
+          onSaveEvents={handleSaveEvents}
+          onSaveServices={handleSaveServices}
+          onSaveTestimonials={handleSaveTestimonials}
+          onSaveVideos={handleSaveTikTokVideos}
+          onSaveWhatsApp={handleSaveWhatsAppConfig}
+        />
+      )}
 
       {/* MOBILE FULLSCREEN SIDE DRAWER MENU */}
       {isMobileMenuOpen && (
@@ -234,17 +363,17 @@ export default function App() {
               Contactos
             </button>
             <button 
-              onClick={() => { triggerToast('Portal de Clientes — Disponível Brevemente!'); setIsMobileMenuOpen(false); }}
+              onClick={() => { handleAdminAccess(); setIsMobileMenuOpen(false); }}
               className="text-neutral-400 hover:text-gold py-2 text-sm italic normal-case cursor-pointer"
             >
-              Portal do Cliente (Entrar)
+              Portal Administrativo (Entrar)
             </button>
           </div>
 
           {/* Large, prominent WhatsApp button footer inside navigation drawer */}
           <div className="flex flex-col gap-3 mt-auto">
             <a
-              href={`https://wa.me/${WHATSAPP_CONFIG.primary.replace('+', '')}?text=${encodeURIComponent('Olá! Visitei o vosso website corporativo e gostaria de falar com a vossa recepção central do Zango.')}`}
+              href={`https://wa.me/${whatsappConfig.primary.replace('+', '')}?text=${encodeURIComponent('Olá! Visitei o vosso website corporativo e gostaria de falar com a vossa recepção central do Zango.')}`}
               target="_blank"
               rel="noopener noreferrer"
               className="w-full bg-emerald-600 hover:bg-emerald-500 text-white-warm py-4 rounded-xl flex items-center justify-center gap-3 font-bold text-sm tracking-wider uppercase transition-all shadow-xl active:scale-95"
@@ -481,7 +610,7 @@ export default function App() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {SERVICES.filter(s => activeCategory === 'all' || s.brandId === activeCategory).map((service) => (
+            {services.filter(s => activeCategory === 'all' || s.brandId === activeCategory).map((service) => (
               <div 
                 key={service.id} 
                 className="bg-black-card border border-neutral-800 rounded-xl overflow-hidden flex flex-col h-full hover:border-[#FD4F4F]/30 transition-all duration-300 group"
@@ -573,103 +702,53 @@ export default function App() {
 
         {/* Vertical List stack matching precisely */}
         <div className="space-y-4">
-          
-          {/* Row 1: Gala Corporativa — Multitech Angola */}
-          <div className="bg-zinc-950 hover:bg-zinc-900 border border-neutral-800/80 rounded-xl p-5 flex flex-col md:flex-row items-center justify-between gap-4 transition-all duration-300 group">
-            <div className="flex items-center gap-5 w-full md:w-auto">
-              {/* Date Box on left */}
-              <div className="text-center bg-[#FD4F4F]/10 border border-[#FD4F4F]/30 w-16 h-16 rounded-lg flex flex-col justify-center shrink-0">
-                <span className="text-2xl font-bold font-display text-[#FD4F4F] leading-none">28</span>
-                <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest leading-none mt-1">JUN</span>
-              </div>
-              
-              <div>
-                <h3 className="font-bold text-base text-white-warm group-hover:text-gold transition-colors">
-                  Gala Corporativa — Multitech Angola
-                </h3>
-                <p className="text-xs text-neutral-400 mt-1">
-                  Casa 300 · Capacidade 300 pax · Jantar + Show
-                </p>
-              </div>
-            </div>
+          {events.length === 0 ? (
+            <div className="rounded-3xl border border-neutral-800 bg-black-deep p-6 text-neutral-400">Ainda não há eventos registados.</div>
+          ) : (
+            events.map((event) => {
+              const dateDisplay = (() => {
+                const parsed = new Date(event.date + 'T00:00:00');
+                if (Number.isNaN(parsed.getTime())) return { day: '??', month: '??' };
+                return {
+                  day: parsed.toLocaleString('pt-PT', { day: '2-digit' }),
+                  month: parsed.toLocaleString('pt-PT', { month: 'short' }).toUpperCase()
+                };
+              })();
 
-            <div className="flex items-center gap-4 w-full md:w-auto justify-between md:justify-end shrink-0">
-              <span className="px-3 py-1 rounded bg-neutral-900 text-neutral-400 border border-neutral-800 text-[10px] uppercase tracking-wider font-semibold">
-                Corporativo
-              </span>
-              <button
-                onClick={() => handleOpenBooking('eventos')}
-                className="bg-transparent hover:bg-white text-white-warm hover:text-black-deep border border-neutral-700 hover:border-white px-5 py-2 rounded text-xs font-bold font-display uppercase tracking-wider transition-all cursor-pointer"
-              >
-                Reservar
-              </button>
-            </div>
-          </div>
+              const bookingService = event.location.includes('Hotel') ? 'hotel' : 'eventos';
 
-          {/* Row 2: Casamento — Família Sebastião */}
-          <div className="bg-zinc-950 hover:bg-zinc-900 border border-neutral-800/80 rounded-xl p-5 flex flex-col md:flex-row items-center justify-between gap-4 transition-all duration-300 group">
-            <div className="flex items-center gap-5 w-full md:w-auto">
-              {/* Date Box */}
-              <div className="text-center bg-[#FD4F4F]/10 border border-[#FD4F4F]/30 w-16 h-16 rounded-lg flex flex-col justify-center shrink-0">
-                <span className="text-2xl font-bold font-display text-[#FD4F4F] leading-none">05</span>
-                <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest leading-none mt-1">JUL</span>
-              </div>
-              
-              <div>
-                <h3 className="font-bold text-base text-white-warm group-hover:text-gold transition-colors">
-                  Casamento — Família Sebastião
-                </h3>
-                <p className="text-xs text-neutral-400 mt-1">
-                  Casa 300 · Cerimónia + Recepção
-                </p>
-              </div>
-            </div>
+              return (
+                <div key={event.id} className="bg-zinc-950 hover:bg-zinc-900 border border-neutral-800/80 rounded-xl p-5 flex flex-col md:flex-row items-center justify-between gap-4 transition-all duration-300 group">
+                  <div className="flex items-center gap-5 w-full md:w-auto">
+                    <div className="text-center bg-[#FD4F4F]/10 border border-[#FD4F4F]/30 w-16 h-16 rounded-lg flex flex-col justify-center shrink-0">
+                      <span className="text-2xl font-bold font-display text-[#FD4F4F] leading-none">{dateDisplay.day}</span>
+                      <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest leading-none mt-1">{dateDisplay.month}</span>
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-base text-white-warm group-hover:text-gold transition-colors">
+                        {event.title}
+                      </h3>
+                      <p className="text-xs text-neutral-400 mt-1">
+                        {event.location} · {event.description.length > 55 ? `${event.description.slice(0, 55)}...` : event.description}
+                      </p>
+                    </div>
+                  </div>
 
-            <div className="flex items-center gap-4 w-full md:w-auto justify-between md:justify-end shrink-0">
-              <span className="px-3 py-1 rounded bg-neutral-900 text-neutral-400 border border-neutral-800 text-[10px] uppercase tracking-wider font-semibold">
-                Casamento
-              </span>
-              <button
-                onClick={() => handleOpenBooking('eventos')}
-                className="bg-transparent hover:bg-white text-white-warm hover:text-black-deep border border-neutral-700 hover:border-white px-5 py-2 rounded text-xs font-bold font-display uppercase tracking-wider transition-all cursor-pointer"
-              >
-                Reservar
-              </button>
-            </div>
-          </div>
-
-          {/* Row 3: Conferência de Negócios — Sala Executiva */}
-          <div className="bg-zinc-950 hover:bg-zinc-900 border border-neutral-800/80 rounded-xl p-5 flex flex-col md:flex-row items-center justify-between gap-4 transition-all duration-300 group">
-            <div className="flex items-center gap-5 w-full md:w-auto">
-              {/* Date Box */}
-              <div className="text-center bg-[#FD4F4F]/10 border border-[#FD4F4F]/30 w-16 h-16 rounded-lg flex flex-col justify-center shrink-0">
-                <span className="text-2xl font-bold font-display text-[#FD4F4F] leading-none">12</span>
-                <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest leading-none mt-1">JUL</span>
-              </div>
-              
-              <div>
-                <h3 className="font-bold text-base text-white-warm group-hover:text-gold transition-colors">
-                  Conferência de Negócios — Sala Executiva
-                </h3>
-                <p className="text-xs text-neutral-400 mt-1">
-                  Sala de Conferências · 50 pax · Full-day
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-4 w-full md:w-auto justify-between md:justify-end shrink-0">
-              <span className="px-3 py-1 rounded bg-neutral-900 text-neutral-400 border border-neutral-800 text-[10px] uppercase tracking-wider font-semibold">
-                Conferência
-              </span>
-              <button
-                onClick={() => handleOpenBooking('conferencia')}
-                className="bg-transparent hover:bg-white text-white-warm hover:text-black-deep border border-neutral-700 hover:border-white px-5 py-2 rounded text-xs font-bold font-display uppercase tracking-wider transition-all cursor-pointer"
-              >
-                Reservar
-              </button>
-            </div>
-          </div>
-
+                  <div className="flex items-center gap-4 w-full md:w-auto justify-between md:justify-end shrink-0">
+                    <span className="px-3 py-1 rounded bg-neutral-900 text-neutral-400 border border-neutral-800 text-[10px] uppercase tracking-wider font-semibold">
+                      {event.status}
+                    </span>
+                    <button
+                      onClick={() => handleOpenBooking(bookingService)}
+                      className="bg-transparent hover:bg-white text-white-warm hover:text-black-deep border border-neutral-700 hover:border-white px-5 py-2 rounded text-xs font-bold font-display uppercase tracking-wider transition-all cursor-pointer"
+                    >
+                      Reservar
+                    </button>
+                  </div>
+                </div>
+              );
+            })
+          )}
         </div>
       </section>
 
@@ -688,7 +767,7 @@ export default function App() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-left">
-            {TESTIMONIALS.map((test) => (
+            {testimonials.map((test) => (
               <div 
                 key={test.id} 
                 className="bg-black-card border border-neutral-800 p-6 rounded-xl flex flex-col justify-between space-y-4 hover:border-gold/30 transition-all duration-300 group"
@@ -746,7 +825,7 @@ export default function App() {
 
           {/* 6 Grid items like the picture */}
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-            {TIKTOK_VIDEOS.map((vid, index) => (
+            {tiktokVideos.map((vid, index) => (
               <a 
                 key={vid.id || index}
                 href={vid.videoUrl}
@@ -828,7 +907,7 @@ export default function App() {
           {/* Right Column Interactive Action Buttons strictly matching visual layout */}
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 shrink-0">
             <a
-              href={`https://wa.me/${WHATSAPP_CONFIG.primary.replace('+', '')}?text=${encodeURIComponent('Olá! Gostaria de falar com o suporte geral do Kapandula Group Luanda.')}`}
+              href={`https://wa.me/${whatsappConfig.primary.replace('+', '')}?text=${encodeURIComponent('Olá! Gostaria de falar com o suporte geral do Kapandula Group Luanda.')}`}
               target="_blank"
               rel="noopener noreferrer"
               className="px-7 py-3 bg-neutral-900 hover:bg-neutral-800 text-white-warm rounded-lg text-xs font-bold font-display uppercase tracking-widest text-center border border-neutral-700 hover:border-gold transition-all duration-300 cursor-pointer"
