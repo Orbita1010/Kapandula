@@ -29,6 +29,7 @@ import KLogo from './components/KLogo';
 import AdminLoginModal from './components/AdminLoginModal';
 import AdminDashboard from './components/AdminDashboard';
 
+const FALLBACK_SERVICE_IMAGE = 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80';
 
 export default function App() {
   // Booking modal state
@@ -156,8 +157,13 @@ export default function App() {
   const eventsSectionRef = useRef<HTMLDivElement>(null);
   const contactsSectionRef = useRef<HTMLDivElement>(null);
 
-  const scrollToSection = (ref: React.RefObject<HTMLDivElement | null>) => {
-    if (ref && ref.current) {
+  const scrollToSection = (ref: React.RefObject<HTMLDivElement | null> | null) => {
+    if (!ref) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setIsMobileMenuOpen(false);
+      return;
+    }
+    if (ref.current) {
       ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
     setIsMobileMenuOpen(false);
@@ -170,8 +176,14 @@ export default function App() {
     }, 4000);
   };
 
+  const normalizeServiceId = (serviceId: string) => {
+    if (serviceId === 'fitness') return 'ginasio';
+    return serviceId;
+  };
+
   const handleOpenBooking = (serviceId: string = 'hotel') => {
-    setSelectedServiceId(serviceId);
+    const normalized = normalizeServiceId(serviceId);
+    setSelectedServiceId(normalized);
     setIsBookingOpen(true);
   };
 
@@ -616,16 +628,15 @@ export default function App() {
                 className="bg-black-card border border-neutral-800 rounded-xl overflow-hidden flex flex-col h-full hover:border-[#FD4F4F]/30 transition-all duration-300 group"
               >
                 {/* Photo frame with zoom */}
-                <div className="h-48 md:h-64 overflow-hidden relative">
+                <div className="h-48 md:h-64 overflow-hidden relative bg-neutral-950">
                   <img 
-                    src={service.imageUrl} 
+                    src={service.imageUrl || FALLBACK_SERVICE_IMAGE} 
                     alt={service.title} 
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     loading="lazy"
+                    onError={(event) => { event.currentTarget.src = FALLBACK_SERVICE_IMAGE; }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black-card to-transparent pointer-events-none" />
-                  
-                  {/* Brand Tag of parent brand */}
                   <span className="absolute top-4 right-4 bg-black-deep/80 text-gold text-[9px] font-bold font-display uppercase tracking-widest px-3 py-1 rounded border border-gold/20">
                     {BRANDS.find(b => b.id === service.brandId)?.name.replace('Kapandula ', '') || 'Serviço'}
                   </span>
@@ -693,10 +704,10 @@ export default function App() {
             </h2>
           </div>
           <button 
-            onClick={() => triggerToast('Mais eventos serão anunciados em breve!')}
+            onClick={() => setIsGalleryOpen(true)}
             className="text-neutral-400 hover:text-gold text-xs font-bold tracking-wider uppercase flex items-center gap-1 cursor-pointer transition-colors group"
           >
-            Ver todos <ArrowRight className="w-4 h-4 text-neutral-500 group-hover:text-gold transition-transform group-hover:translate-x-1" />
+            Ver galeria <ArrowRight className="w-4 h-4 text-neutral-500 group-hover:text-gold transition-transform group-hover:translate-x-1" />
           </button>
         </div>
 
@@ -718,32 +729,42 @@ export default function App() {
               const bookingService = event.location.includes('Hotel') ? 'hotel' : 'eventos';
 
               return (
-                <div key={event.id} className="bg-zinc-950 hover:bg-zinc-900 border border-neutral-800/80 rounded-xl p-5 flex flex-col md:flex-row items-center justify-between gap-4 transition-all duration-300 group">
-                  <div className="flex items-center gap-5 w-full md:w-auto">
-                    <div className="text-center bg-[#FD4F4F]/10 border border-[#FD4F4F]/30 w-16 h-16 rounded-lg flex flex-col justify-center shrink-0">
-                      <span className="text-2xl font-bold font-display text-[#FD4F4F] leading-none">{dateDisplay.day}</span>
-                      <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest leading-none mt-1">{dateDisplay.month}</span>
+                <div key={event.id} className="bg-zinc-950 hover:bg-zinc-900 border border-neutral-800/80 rounded-3xl overflow-hidden transition-all duration-300 group">
+                  <div className="md:flex">
+                    <div className="relative h-48 md:h-auto md:w-56 overflow-hidden">
+                      <img
+                        src={event.imageUrl}
+                        alt={event.title}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        loading="lazy"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black-deep/90 via-black-deep/20 to-transparent" />
+                      <div className="absolute left-4 bottom-4 text-white-warm text-sm leading-tight">
+                        <p className="font-bold tracking-wide">{event.title}</p>
+                        <p className="text-[11px] text-neutral-300">{event.location}</p>
+                      </div>
                     </div>
-                    <div>
-                      <h3 className="font-bold text-base text-white-warm group-hover:text-gold transition-colors">
-                        {event.title}
-                      </h3>
-                      <p className="text-xs text-neutral-400 mt-1">
-                        {event.location} · {event.description.length > 55 ? `${event.description.slice(0, 55)}...` : event.description}
-                      </p>
+                    <div className="p-5 flex flex-col justify-between flex-1">
+                      <div className="space-y-3">
+                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FD4F4F]/10 border border-[#FD4F4F]/30 text-[10px] uppercase tracking-widest text-[#FD4F4F]">
+                          <span>{dateDisplay.day}/{dateDisplay.month}</span>
+                          <span>{event.time}</span>
+                        </div>
+                        <p className="text-sm font-semibold text-white-warm">{event.title}</p>
+                        <p className="text-xs text-neutral-400 leading-relaxed">{event.description}</p>
+                      </div>
+                      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mt-4">
+                        <span className="px-3 py-1 rounded bg-neutral-900 text-neutral-400 border border-neutral-800 text-[10px] uppercase tracking-wider font-semibold">
+                          {event.status}
+                        </span>
+                        <button
+                          onClick={() => handleOpenBooking(bookingService)}
+                          className="bg-transparent hover:bg-white text-white-warm hover:text-black-deep border border-neutral-700 hover:border-white px-5 py-2 rounded text-xs font-bold font-display uppercase tracking-wider transition-all cursor-pointer"
+                        >
+                          Reservar
+                        </button>
+                      </div>
                     </div>
-                  </div>
-
-                  <div className="flex items-center gap-4 w-full md:w-auto justify-between md:justify-end shrink-0">
-                    <span className="px-3 py-1 rounded bg-neutral-900 text-neutral-400 border border-neutral-800 text-[10px] uppercase tracking-wider font-semibold">
-                      {event.status}
-                    </span>
-                    <button
-                      onClick={() => handleOpenBooking(bookingService)}
-                      className="bg-transparent hover:bg-white text-white-warm hover:text-black-deep border border-neutral-700 hover:border-white px-5 py-2 rounded text-xs font-bold font-display uppercase tracking-wider transition-all cursor-pointer"
-                    >
-                      Reservar
-                    </button>
                   </div>
                 </div>
               );
@@ -929,24 +950,62 @@ export default function App() {
       </section>
 
       {/* FOOTER COPYRIGHT BAR */}
-      <footer className="bg-black-deep border-t border-neutral-800 py-8">
-        <div className="max-w-[1280px] mx-auto px-6 md:px-12 flex flex-col md:flex-row items-center justify-between gap-4 text-[11px] text-neutral-500">
-          
-          {/* Logo Name */}
-          <div className="flex items-center gap-1.5">
-            <KLogo subtitle="Kapandula" size="sm" />
+      <footer className="bg-black-deep border-t border-neutral-800 py-10">
+        <div className="max-w-[1280px] mx-auto px-6 md:px-12 space-y-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="space-y-4">
+              <div className="flex items-center gap-3">
+                <KLogo subtitle="Kapandula" size="sm" />
+              </div>
+              <p className="text-sm text-neutral-400 leading-relaxed max-w-md">
+                Kapandula Group oferece experiências premium em hotelaria, eventos, fitness e estética. O nosso compromisso é criar momentos memoráveis com atendimento personalizado e rigor operacional.
+              </p>
+              <div className="text-xs text-neutral-500 space-y-2">
+                <p className="font-semibold text-white-warm uppercase tracking-[0.2em]">Atendimento</p>
+                <p>Segunda a Domingo · 07:00 - 22:00</p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4 text-xs text-neutral-400">
+              <div>
+                <p className="font-semibold text-white-warm uppercase tracking-[0.2em] mb-3">Navegação</p>
+                <button onClick={() => scrollToSection(null)} className="block text-left hover:text-white-warm transition-colors">Início</button>
+                <button onClick={() => scrollToSection(eventsSectionRef)} className="block text-left hover:text-white-warm transition-colors mt-2">Eventos</button>
+                <button onClick={() => scrollToSection(servicesSectionRef)} className="block text-left hover:text-white-warm transition-colors mt-2">Serviços</button>
+                <button onClick={() => setIsGalleryOpen(true)} className="block text-left hover:text-white-warm transition-colors mt-2">Galeria</button>
+              </div>
+              <div>
+                <p className="font-semibold text-white-warm uppercase tracking-[0.2em] mb-3">Contacto</p>
+                <p className="text-neutral-400">📍 Zango 8, Quarteirão V</p>
+                <p className="text-neutral-400 mt-2">📞 +244 958 718 004</p>
+                <p className="text-neutral-400">📞 +244 950 515 134</p>
+                <a href={`https://wa.me/${whatsappConfig.primary.replace('+', '')}`} target="_blank" rel="noreferrer" className="inline-block mt-3 text-[#FD4F4F] hover:text-white-warm transition-colors">WhatsApp Suporte</a>
+              </div>
+            </div>
+
+            <div className="bg-[#090909] border border-neutral-800 rounded-3xl p-6 text-xs text-neutral-400">
+              <p className="font-semibold text-white-warm uppercase tracking-[0.2em] mb-4">Resumo rápido</p>
+              <ul className="space-y-3">
+                <li className="flex items-start gap-3">
+                  <ShieldAlert className="w-4 h-4 text-gold mt-0.5" />
+                  <span>Proteção de dados e reservas confirmadas com atenção personalizada.</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <Sparkles className="w-4 h-4 text-gold mt-0.5" />
+                  <span>Serviço exclusivo 24/7 para eventos e suites premium.</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <Compass className="w-4 h-4 text-gold mt-0.5" />
+                  <span>Localização estratégica no Zango 8 para acesso rápido ao aeroporto e centros empresariais.</span>
+                </li>
+              </ul>
+            </div>
           </div>
 
-          {/* Copyright description */}
-          <div className="text-center font-display">
-            © 2026 Kapandula Group · Todos os direitos reservados
+          <div className="border-t border-neutral-800 pt-6 flex flex-col md:flex-row items-center justify-between gap-4 text-[10px] text-neutral-500">
+            <span>© 2026 Kapandula Group · Todos os direitos reservados</span>
+            <span>Política de Privacidade · Termos de Uso</span>
           </div>
-
-          {/* Local Angolan reference */}
-          <div className="flex items-center gap-1 hover:text-white-warm transition-colors font-semibold">
-            <span>Feito com orgulho em Angola 🇦🇴</span>
-          </div>
-
         </div>
       </footer>
 

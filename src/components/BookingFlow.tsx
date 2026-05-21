@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { X, Check, Calendar, Users, Phone, User, MessageSquare, ArrowRight, ArrowLeft } from 'lucide-react';
 import { BookingFormState, ServiceDetailItem } from '../types';
 import { WHATSAPP_CONFIG } from '../data';
@@ -20,6 +20,20 @@ export default function BookingFlow({ isOpen, onClose, initialService = 'hotel' 
     message: ''
   });
   const [phoneError, setPhoneError] = useState<string>('');
+
+  useEffect(() => {
+    if (!isOpen) return;
+    setStep(1);
+    setPhoneError('');
+    setFormData({
+      serviceType: initialService === 'fitness' ? 'ginasio' : initialService,
+      fullName: '',
+      phone: '',
+      date: new Date().toISOString().split('T')[0],
+      participants: 1,
+      message: ''
+    });
+  }, [isOpen, initialService]);
 
   if (!isOpen) return null;
 
@@ -69,6 +83,7 @@ export default function BookingFlow({ isOpen, onClose, initialService = 'hotel' 
       gastronomia: '🍴 Kapandula Hotel — Almoço / Jantar',
       eventos: '🎉 Casa 300 — Salão de Festas & Banquetes',
       conferencia: '💼 Casa 300 — Sala de Conferências',
+      fitness: '💪 Ginásio V119 — Plano de Treino',
       ginasio: '💪 Ginásio V119 — Plano de Treino',
       barbearia: '✂️ Kapandula Barbearia — Corte & Estilo',
       salao: '🌸 Kapandula Beleza — Tratamento Estético'
