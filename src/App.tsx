@@ -298,19 +298,19 @@ export default function App() {
                 {label}
               </button>
             ))}
-          </div>
-
-          {/* Right Action buttons */}
-          <div className="hidden md:flex items-center gap-3">
             <a
               href="https://menu.kapandula.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-gold hover:text-black-deep bg-gold/10 hover:bg-gold px-4 py-2 rounded-lg border border-gold/40 hover:border-gold transition-all duration-300 shadow-sm"
+              className="hover:text-gold transition-colors text-neutral-300 pb-0.5 border-b-2 border-transparent flex items-center gap-1"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
-              Ver Menu
+              Menu
+              <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="opacity-50"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
             </a>
+          </div>
+
+          {/* Right Action buttons */}
+          <div className="hidden md:flex items-center gap-3">
             <a
               href={`https://wa.me/${whatsappConfig.primary.replace('+', '')}?text=${encodeURIComponent('Olá! Gostaria de obter mais informações sobre o Kapandula Group.')}`}
               target="_blank"
@@ -414,10 +414,10 @@ export default function App() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="flex items-center justify-center gap-2 text-gold border border-gold/40 rounded-xl py-3 px-6 font-bold text-sm uppercase tracking-widest hover:bg-gold hover:text-black-deep transition-all"
+              className="text-neutral-300 hover:text-gold py-2 flex items-center gap-2 cursor-pointer"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
-              Ver Menu
+              Menu
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="opacity-50"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
             </a>
             <button 
               onClick={() => { handleAdminAccess(); setIsMobileMenuOpen(false); }}
