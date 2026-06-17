@@ -88,7 +88,7 @@ export const SERVICES: ServiceDetailItem[] = [
     title: 'Musculação & Equipamento Bio-Mecânico',
     subtitle: 'Tecnologia de ponta para otimização de performance física',
     description: 'Equipamentos mecânicos de topo selecionados para treino de força, alta durabilidade e perfeita ergonomia. Área de pesos livres até 50kg, máquinas isoladas e polias reguláveis de última linha para todas as faixas e metas.',
-    imageUrl: '/images/ginasio-v119.png',
+    imageUrl: '/images/ginasio-sala-geral.png',
     features: ['Equipamentos profissionais certificados', 'Zona de pesos livres ampla', 'Treinadores presentes na sala', 'Balneários individuais de luxo climatizados', 'Avaliação de bioimpedância gratuita trimestral'],
     pricingRange: 'Planos a partir de 25.000 Kz / Mês'
   },
@@ -98,7 +98,7 @@ export const SERVICES: ServiceDetailItem[] = [
     title: 'Lounge V119 - Spinning e Cardio',
     subtitle: 'Aulas em grupo cheias de energia angolana',
     description: 'Melhore a sua saúde cardiovascular nas nossas salas com som surround e instrutores de topo que criam percursos intensos e estimulantes que estimulam o foco mental e reduzem o estresse.',
-    imageUrl: '/images/esplanada-eventos.png',
+    imageUrl: '/images/ginasio-spinning.png',
     features: ['Som dinâmico com DJs locais convidados', 'Ar condicionado dedicado de alta filtragem', 'Horários flexíveis diários', 'Sessões de alta intensidade HIIT', 'Hidratação e sumos naturais à discrição no bar'],
     pricingRange: 'Acesso VIP V119 Incluído'
   },

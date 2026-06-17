@@ -228,16 +228,34 @@ export default function App() {
 
   // Pre-configured gallery list — fotos reais do espaço Kapandula
   const premiumGallery = [
+    // Hotel
     { url: '/images/piscina-kapandula.png', title: 'Piscina Kapandula — Assinatura Exclusiva em Azulejo', tag: 'Hotel' },
+    { url: '/images/esplanada-piscina.png', title: 'Esplanada Premium junto à Piscina', tag: 'Hotel' },
+    { url: '/images/kapandula-fachada.png', title: 'Entrada Principal Kapandula Hotel', tag: 'Hotel' },
+    { url: '/images/kapandula-sign.png', title: 'Kapandula — Identidade Dourada', tag: 'Hotel' },
+    // Gastronomia
     { url: '/images/restaurante-interior.png', title: 'Restaurante com Tecto de Palha Artesanal', tag: 'Gastronomia' },
     { url: '/images/cocktail-terrace.png', title: 'Cocktails Artesanais na Esplanada ao Pôr do Sol', tag: 'Gastronomia' },
+    // Eventos
     { url: '/images/esplanada-eventos.png', title: 'Espaço de Eventos ao Ar Livre com Palmeiras', tag: 'Eventos' },
-    { url: '/images/esplanada-piscina.png', title: 'Esplanada Premium junto à Piscina', tag: 'Hotel' },
     { url: '/images/kapandula-club.png', title: 'Kapandula Club — Cúpula Icónica', tag: 'Eventos' },
+    { url: '/images/casa300-exterior.png', title: 'Casa 300 — Vista Exterior do Salão de Eventos', tag: 'Eventos' },
+    { url: '/images/casa300-fachada.png', title: 'Casa 300 — Fachada do Salão de Festas', tag: 'Eventos' },
+    { url: '/images/casa300-recepcao.png', title: 'Casa 300 — Recepção com Decoração Floral', tag: 'Eventos' },
+    { url: '/images/casa300-entrada.png', title: 'Casa 300 — Entrada e Informações', tag: 'Eventos' },
+    // Fitness
+    { url: '/images/ginasio-sala-geral.png', title: 'Ginásio V119 — Vista Geral da Sala Principal', tag: 'Fitness' },
+    { url: '/images/ginasio-vista-cima.png', title: 'Ginásio V119 — Perspectiva Aérea dos Equipamentos', tag: 'Fitness' },
+    { url: '/images/ginasio-musculacao.png', title: 'Ginásio V119 — Zona de Musculação', tag: 'Fitness' },
+    { url: '/images/ginasio-spinning.png', title: 'Ginásio V119 — Sala de Spinning & Cardio', tag: 'Fitness' },
+    { url: '/images/ginasio-crossfit.png', title: 'Ginásio V119 — Zona CrossFit & Pneus', tag: 'Fitness' },
+    { url: '/images/ginasio-passadeiras.png', title: 'Ginásio V119 — Passadeiras com Tecto Vermelho', tag: 'Fitness' },
+    { url: '/images/ginasio-escadas.png', title: 'Ginásio V119 — Escadas em Madeira e Ferro', tag: 'Fitness' },
+    { url: '/images/ginasio-voce-conseguiu.png', title: 'Ginásio V119 — Motivação no Pavimento', tag: 'Fitness' },
+    { url: '/images/ginasio-v119.png', title: 'Ginásio V119 — Entrada Profissional', tag: 'Fitness' },
+    // Beleza
     { url: '/images/barbearia-fachada.png', title: 'Kapandula Barbearia — Estilo e Requinte', tag: 'Beleza' },
-    { url: '/images/ginasio-v119.png', title: 'Ginásio V119 — Profissional Fitness', tag: 'Fitness' },
-    { url: '/images/kapandula-fachada.png', title: 'Entrada Principal Kapandula Group', tag: 'Hotel' },
-    { url: '/images/kapandula-sign.png', title: 'Kapandula — Identidade Dourada', tag: 'Hotel' },
+    { url: '/images/salao-beleza.png', title: 'Salão de Beleza — Tratamentos Estéticos', tag: 'Beleza' },
   ];
 
   // Helper function to map design categorizations from image QuickNav
