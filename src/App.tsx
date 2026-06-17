@@ -29,7 +29,7 @@ import KLogo from './components/KLogo';
 import AdminLoginModal from './components/AdminLoginModal';
 import AdminDashboard from './components/AdminDashboard';
 
-const FALLBACK_SERVICE_IMAGE = 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80';
+const FALLBACK_SERVICE_IMAGE = '/images/piscina-kapandula.png';
 
 export default function App() {
   // Booking modal state
@@ -59,6 +59,10 @@ export default function App() {
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
   const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
   const [isAdminDashboardOpen, setIsAdminDashboardOpen] = useState(false);
+
+  // Active nav section tracking
+  const [activeSection, setActiveSection] = useState<string>('inicio');
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
   const ADMIN_STORAGE_KEY = 'kapandula_admin_logged_in';
   const EVENTS_KEY = 'kapandula_events';
@@ -157,6 +161,35 @@ export default function App() {
   const eventsSectionRef = useRef<HTMLDivElement>(null);
   const contactsSectionRef = useRef<HTMLDivElement>(null);
 
+  // Scroll tracker: active section + scroll-to-top button
+  useEffect(() => {
+    const onScroll = () => {
+      const y = window.scrollY;
+      setShowScrollTop(y > 400);
+      const refs = [
+        { id: 'contactos', ref: contactsSectionRef },
+        { id: 'servicos', ref: servicesSectionRef },
+        { id: 'eventos', ref: eventsSectionRef },
+      ];
+      let found = 'inicio';
+      for (const { id, ref } of refs) {
+        if (ref.current) {
+          const top = ref.current.getBoundingClientRect().top;
+          if (top <= 120) found = id;
+        }
+      }
+      setActiveSection(found);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  const handleOpenGalleryFresh = () => {
+    setActiveGalleryImg('');
+    setGalleryTitle('');
+    setIsGalleryOpen(true);
+  };
+
   const scrollToSection = (ref: React.RefObject<HTMLDivElement | null> | null) => {
     if (!ref) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -246,46 +279,37 @@ export default function App() {
 
           {/* Centered Navigation Links */}
           <div className="hidden md:flex items-center gap-8 text-xs font-bold uppercase tracking-[0.2em]">
-            <button 
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="hover:text-gold transition-colors text-gold font-semibold cursor-pointer"
-            >
-              Início
-            </button>
-            <button 
-              onClick={() => scrollToSection(eventsSectionRef)}
-              className="hover:text-gold transition-colors text-neutral-300 cursor-pointer"
-            >
-              Eventos
-            </button>
-            <button 
-              onClick={() => scrollToSection(servicesSectionRef)}
-              className="hover:text-gold transition-colors text-neutral-300 cursor-pointer"
-            >
-              Serviços
-            </button>
-            <button 
-              onClick={() => setIsGalleryOpen(true)}
-              className="hover:text-gold transition-colors text-neutral-300 cursor-pointer"
-            >
-              Galeria
-            </button>
-            <button 
-              onClick={() => scrollToSection(contactsSectionRef)}
-              className="hover:text-gold transition-colors text-neutral-300 cursor-pointer"
-            >
-              Contactos
-            </button>
+            {[
+              { label: 'Início', id: 'inicio', action: () => window.scrollTo({ top: 0, behavior: 'smooth' }) },
+              { label: 'Eventos', id: 'eventos', action: () => scrollToSection(eventsSectionRef) },
+              { label: 'Serviços', id: 'servicos', action: () => scrollToSection(servicesSectionRef) },
+              { label: 'Galeria', id: 'galeria', action: handleOpenGalleryFresh },
+              { label: 'Contactos', id: 'contactos', action: () => scrollToSection(contactsSectionRef) },
+            ].map(({ label, id, action }) => (
+              <button
+                key={id}
+                onClick={action}
+                className={`hover:text-gold transition-colors cursor-pointer pb-0.5 border-b-2 ${
+                  activeSection === id || (id === 'inicio' && activeSection === 'inicio')
+                    ? 'text-gold border-gold'
+                    : 'text-neutral-300 border-transparent'
+                }`}
+              >
+                {label}
+              </button>
+            ))}
           </div>
 
           {/* Right Action buttons */}
           <div className="hidden md:flex items-center gap-4">
-            <button 
-              onClick={handleAdminAccess}
-              className="text-xs font-bold uppercase tracking-widest text-neutral-300 hover:text-gold px-4 py-2 transition-colors cursor-pointer border border-transparent"
+            <a
+              href={`https://wa.me/${whatsappConfig.primary.replace('+', '')}?text=${encodeURIComponent('Olá! Gostaria de obter mais informações sobre o Kapandula Group.')}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs font-bold uppercase tracking-widest text-neutral-300 hover:text-gold px-4 py-2 transition-colors border border-transparent"
             >
-              Entrar
-            </button>
+              WhatsApp
+            </a>
             <button 
               onClick={() => handleOpenBooking('hotel')}
               className="text-xs font-bold uppercase tracking-widest text-white-warm hover:text-black-deep bg-neutral-900 hover:bg-gold px-5 py-2.5 rounded-lg border border-gold/30 hover:border-gold transition-all duration-300 cursor-pointer shadow-lg active:scale-95"
@@ -378,9 +402,9 @@ export default function App() {
             </button>
             <button 
               onClick={() => { handleAdminAccess(); setIsMobileMenuOpen(false); }}
-              className="text-neutral-400 hover:text-gold py-2 text-sm italic normal-case cursor-pointer"
+              className="text-neutral-700 hover:text-neutral-500 py-1 text-[10px] italic normal-case cursor-pointer tracking-wider"
             >
-              Portal Administrativo (Entrar)
+              ···
             </button>
           </div>
 
@@ -570,10 +594,10 @@ export default function App() {
             </h2>
           </div>
           <button 
-            onClick={() => setIsGalleryOpen(true)}
+            onClick={handleOpenGalleryFresh}
             className="text-neutral-400 hover:text-gold text-xs font-bold tracking-wider uppercase flex items-center gap-1 cursor-pointer transition-colors group"
           >
-            Ver todos <ArrowRight className="w-4 h-4 text-neutral-500 group-hover:text-gold transition-transform group-hover:translate-x-1" />
+            Ver galeria <ArrowRight className="w-4 h-4 text-neutral-500 group-hover:text-gold transition-transform group-hover:translate-x-1" />
           </button>
         </div>
 
@@ -1167,6 +1191,17 @@ export default function App() {
 
       {/* WHATSAPP FLOATING BADGE */}
       <WhatsAppFloat />
+
+      {/* SCROLL TO TOP BUTTON */}
+      {showScrollTop && (
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className="fixed bottom-24 right-5 z-[900] w-10 h-10 rounded-full bg-neutral-900 border border-gold/40 text-gold hover:bg-gold hover:text-black-deep flex items-center justify-center shadow-xl transition-all duration-300 active:scale-90 cursor-pointer"
+          aria-label="Voltar ao topo"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+        </button>
+      )}
 
       {/* FULL IN-FLOW BOOKING MODAL */}
       <BookingFlow 

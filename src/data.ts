@@ -44,7 +44,7 @@ export const SERVICES: ServiceDetailItem[] = [
     title: 'Suítes Deluxe & Quartos Clássicos',
     subtitle: 'Acomodação premium 4 estrelas no Zango 8',
     description: 'Quartos projetados com refinamento e conforto acústico. Camas king-size ortopédicas de qualidade superior, secretária de trabalho, ar-condicionado silencioso, frigobar abastecido com bebidas locais e importadas, casa de banho privativa com duche de massagem e Wi-Fi de alta velocidade ultra-veloz.',
-    imageUrl: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=800&q=80',
+    imageUrl: '/images/kapandula-fachada.png',
     features: ['Pequeno-almoço executivo incluído', 'Apoio de Quarto 24 Horas', 'Ar condicionado inteligente', 'Cofre eletrónico digital', 'Televisão por satélite Unitel/DSTV'],
     pricingRange: 'Desde 45.000 Kz / Noite'
   },
@@ -76,7 +76,7 @@ export const SERVICES: ServiceDetailItem[] = [
     title: 'Reuniões Corporativas & Conferências',
     subtitle: 'Infraestrutura completa para eventos de negócios',
     description: 'Nossa sala secundária adaptável e o salão principal oferecem excelente acústica e equipamentos audiovisuais avançados, incluindo projetores laser, microfones sem fios e rede Wi-Fi dedicada de alta performance corporativa.',
-    imageUrl: 'https://images.unsplash.com/photo-1517502884422-41eaaced0168?auto=format&fit=crop&w=800&q=80',
+    imageUrl: '/images/esplanada-piscina.png',
     features: ['Infraestrutura audiovisual topo de gama', 'Serviço de Coffee Break executivo', 'Púlpito de discursos profissional', 'Climatização independente', 'Suporte técnico em tempo real'],
     pricingRange: 'Orçamento com base nos participantes'
   },
@@ -98,7 +98,7 @@ export const SERVICES: ServiceDetailItem[] = [
     title: 'Lounge V119 - Spinning e Cardio',
     subtitle: 'Aulas em grupo cheias de energia angolana',
     description: 'Melhore a sua saúde cardiovascular nas nossas salas com som surround e instrutores de topo que criam percursos intensos e estimulantes que estimulam o foco mental e reduzem o estresse.',
-    imageUrl: 'https://images.unsplash.com/photo-1518610011536-d62e666fcfbf?auto=format&fit=crop&w=800&q=80',
+    imageUrl: '/images/esplanada-eventos.png',
     features: ['Som dinâmico com DJs locais convidados', 'Ar condicionado dedicado de alta filtragem', 'Horários flexíveis diários', 'Sessões de alta intensidade HIIT', 'Hidratação e sumos naturais à discrição no bar'],
     pricingRange: 'Acesso VIP V119 Incluído'
   },
@@ -120,7 +120,7 @@ export const SERVICES: ServiceDetailItem[] = [
     title: 'Spa Facial & Tratamentos Estéticos',
     subtitle: 'Limpeza profunda e hidratação dermocosmética',
     description: 'Tratamentos estéticos revigorantes focados no homem moderno e público misto. Limpeza de pele com extração ultrassónica, peelings leves, massagem facial relaxante contra olheiras e hidratação com extratos orgânicos preciosos de plantas africanas.',
-    imageUrl: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=800&q=80',
+    imageUrl: '/images/salao-beleza.png',
     features: ['Produtos de alta gama internacional', 'Cabines climatizadas reservadas', 'Drenagem linfática localizada', 'Máscaras de colagénio rejuvenescedoras', 'Profissionais titulados de estética facial'],
     pricingRange: 'Renove o seu bem-estar diário'
   }
@@ -130,31 +130,31 @@ export const UPCOMING_EVENTS: UpcomingEventItem[] = [
   {
     id: 'dinner-jazz',
     title: 'Noite de Fado & Jazz Angolano',
-    date: '2026-05-29',
+    date: '2026-07-26',
     time: '20:30',
-    location: 'Kapandula Hotel',
-    description: 'Uma noite sofisticada unindo o fado português nostálgico e o calor do jazz angolano clássico. Menu degustação de 3 pratos elaborado exclusivamente pelo nosso Chef Assinatura.',
-    imageUrl: 'https://images.unsplash.com/photo-1511192336575-5a79af67a629?auto=format&fit=crop&w=800&q=80',
+    location: 'Kapandula Club',
+    description: 'Uma noite sofisticada unindo o fado português nostálgico e o calor do semba e jazz angolano clássico. Menu degustação de 3 pratos elaborado exclusivamente pelo nosso Chef Assinatura no icónico Kapandula Club.',
+    imageUrl: '/images/kapandula-club.png',
     status: 'Últimas Vagas'
   },
   {
     id: 'gala-noivas',
     title: 'Wedding Showcase - Casa 300',
-    date: '2026-06-12',
+    date: '2026-08-15',
     time: '16:00',
-    location: 'Casa 300',
-    description: 'A maior feira de noivas da Centralidade do Zango. Venha conhecer as últimas tendências em vestidos de gala, catering de luxo, decoração dourada e pacotes exclusivos com descontos.',
-    imageUrl: 'https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?auto=format&fit=crop&w=800&q=80',
+    location: 'Casa 300 & Esplanada',
+    description: 'A maior feira de noivas da Centralidade do Zango 8. Venha conhecer as últimas tendências em vestidos de gala, catering de luxo, decoração dourada ao ar livre e pacotes exclusivos com descontos especiais.',
+    imageUrl: '/images/esplanada-eventos.png',
     status: 'Confirmado'
   },
   {
     id: 'fitness-masterclass',
     title: 'Masterclass HIIT & Nutrição V119',
-    date: '2026-06-20',
+    date: '2026-07-12',
     time: '08:00',
-    location: 'Esplanada Lounge',
-    description: 'Treino matinal coletivo de alta intensidade na esplanada exterior para celebrar o bem-estar, seguido por palestra enriquecedora sobre suplementação saudável e plano de nutrição angolano.',
-    imageUrl: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=800&q=80',
+    location: 'Ginásio V119 & Esplanada',
+    description: 'Treino matinal coletivo de alta intensidade no Ginásio V119 e esplanada exterior, seguido por palestra enriquecedora sobre suplementação saudável e plano de nutrição adaptado ao estilo de vida angolano.',
+    imageUrl: '/images/esplanada-piscina.png',
     status: 'Confirmado'
   }
 ];
