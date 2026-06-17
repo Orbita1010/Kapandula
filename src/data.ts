@@ -8,7 +8,7 @@ export const BRANDS: BrandInfo[] = [
     description: 'Um novo conceito de sofisticação hoteleira no Zango 8. Oferecemos quartos de alto padrão, executive lounges, salas de reuniões equipadas e uma gastronomia de fusão internacional e africana irresistível.',
     symbol: '🏨',
     stars: 4,
-    highlightImage: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80'
+    highlightImage: '/images/piscina-kapandula.png'
   },
   {
     id: 'eventos',
@@ -16,7 +16,7 @@ export const BRANDS: BrandInfo[] = [
     tagline: 'O seu momento especial merece o melhor espaço',
     description: 'O salão de festas e eventos premium do Zango 8. Ideal para casamentos luxuosos, banquetes de gala, seminários corporativos e aniversários intimistas com equipamentos multimédia topo de gama.',
     symbol: '🎉',
-    highlightImage: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=1200&q=80'
+    highlightImage: '/images/esplanada-eventos.png'
   },
   {
     id: 'fitness',
@@ -24,7 +24,7 @@ export const BRANDS: BrandInfo[] = [
     tagline: 'O seu corpo, a nossa missão de saúde',
     description: 'O mais bem equipado espaço fitness da região de Luanda. Treine com pesos de alta performance, zona de cardio de última geração, aulas de grupo guiadas e acompanhamento personalizado com treinadores certificados.',
     symbol: '💪',
-    highlightImage: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1200&q=80'
+    highlightImage: '/images/ginasio-v119.png'
   },
   {
     id: 'barbearia',
@@ -32,7 +32,7 @@ export const BRANDS: BrandInfo[] = [
     tagline: 'Visual impecável para o homem angolano moderno',
     description: 'Uma barbearia premium e spa masculino no Zango 8. Técnicas modernas de corte de cabelo, rituais tradicionais de barba com toalha quente, manicure e tratamentos capilares sob medida.',
     symbol: '✂️',
-    highlightImage: 'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=1200&q=80'
+    highlightImage: '/images/barbearia-fachada.png'
   }
 ];
 
@@ -54,7 +54,7 @@ export const SERVICES: ServiceDetailItem[] = [
     title: 'Restaurante & Lounge Gourmet',
     subtitle: 'Fusão de sabores angolanos e alta gastronomia internacional',
     description: 'A nossa cozinha funde com mestria ingredientes locais autênticos angolanos como o funge de carne de sol requintado, com a culinária contemporânea mundial. Desfrute ainda de um bar elegante com cocktails artesanais e carta de vinhos selecionados.',
-    imageUrl: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=800&q=80',
+    imageUrl: '/images/restaurante-interior.png',
     features: ['Chef executivo de renome', 'Cocktails artesanais de assinatura', 'Espaço climatizado e esplanada exterior', 'Eventos de música ao vivo às sextas-feiras', 'Menu executivo para almoço de negócios'],
     pricingRange: 'Funge Gourmet no Sábado / Jantares à Carta'
   },
@@ -66,7 +66,7 @@ export const SERVICES: ServiceDetailItem[] = [
     title: 'Casamentos & Banquetes de Sonho',
     subtitle: 'O maior e mais luxuoso espaço de festas do Zango',
     description: 'A Casa 300 destaca-se pela sua arquitetura imponente com teto decorado com luzes de fada e candeeiros de cristal, ideal para transformar o seu casamento num evento memorável. Serviço especializado de decoração em tons pastel e dourado, organização de buffet e coordenadores no local.',
-    imageUrl: 'https://images.unsplash.com/photo-1469371670807-013ccf25f16a?auto=format&fit=crop&w=800&q=80',
+    imageUrl: '/images/esplanada-eventos.png',
     features: ['Capacidade até 300 convidados sentados', 'Estacionamento privativo vigiado', 'Palco ajustável com sonorização JBL', 'Catering exclusivo sob orientação', 'Serviço de buffet internacional com toques angolanos'],
     pricingRange: 'Menus Personalizados por Casamento'
   },
@@ -88,7 +88,7 @@ export const SERVICES: ServiceDetailItem[] = [
     title: 'Musculação & Equipamento Bio-Mecânico',
     subtitle: 'Tecnologia de ponta para otimização de performance física',
     description: 'Equipamentos mecânicos de topo selecionados para treino de força, alta durabilidade e perfeita ergonomia. Área de pesos livres até 50kg, máquinas isoladas e polias reguláveis de última linha para todas as faixas e metas.',
-    imageUrl: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80',
+    imageUrl: '/images/ginasio-v119.png',
     features: ['Equipamentos profissionais certificados', 'Zona de pesos livres ampla', 'Treinadores presentes na sala', 'Balneários individuais de luxo climatizados', 'Avaliação de bioimpedância gratuita trimestral'],
     pricingRange: 'Planos a partir de 25.000 Kz / Mês'
   },
@@ -110,7 +110,7 @@ export const SERVICES: ServiceDetailItem[] = [
     title: 'Grooming Clássico & Terapia de Barba',
     subtitle: 'Cortes desenhados por mestres barbeiros',
     description: 'O ritual masculino por excelência no Zango. Desde o elegante corte degradê americano ao desenho de barba com navalha tradicional, combinado com exfoliante facial e finalização com bálsamos perfumados e óleo especial de sândalo.',
-    imageUrl: 'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=800&q=80',
+    imageUrl: '/images/barbearia-fachada.png',
     features: ['Lounge exclusivo com bar e TVDSTV', 'Toalha quente com vapor de ozono relaxante', 'Cerveja gelada ou café de oferta no serviço', 'Barbeiros premiados de Luanda', 'Espaço ultra-higiénico premium'],
     pricingRange: 'Cortes com requinte sob marcação'
   },
@@ -201,26 +201,26 @@ export const TESTIMONIALS: TestimonialItem[] = [
 export const TIKTOK_VIDEOS: TikTokVideoItem[] = [
   {
     id: 'v1',
-    title: 'Visita guiada ao Kapandula Hotel 4★: Descubra o luxo das nossas suites master no Zango',
+    title: 'Visita guiada ao Kapandula Hotel 4★: Descubra o luxo da nossa piscina exclusiva no Zango',
     views: '45.2K',
     likes: '8.4K',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=600&q=80',
+    thumbnailUrl: '/images/piscina-kapandula.png',
     videoUrl: 'https://vt.tiktok.com/ZS9tHa4Dg/'
   },
   {
     id: 'v2',
-    title: 'Decoração estonteante com tons dourados para Casamento Majestoso de Sábado na Casa 300',
+    title: 'Decoração estonteante com palmeiras tropicais na nossa esplanada de eventos Casa 300',
     views: '28.9K',
     likes: '5.1K',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=600&q=80',
+    thumbnailUrl: '/images/esplanada-eventos.png',
     videoUrl: 'https://vt.tiktok.com/ZS9tHa4Dg/'
   },
   {
     id: 'v3',
-    title: 'Energia contagiante no treino coletivo HIIT do Ginásio V119 — Junte-se à nossa comunidade',
+    title: 'Ginásio V119 — Profissional Fitness no Zango 8. Transforme o seu corpo connosco!',
     views: '19.4K',
     likes: '3.3K',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?auto=format&fit=crop&w=600&q=80',
+    thumbnailUrl: '/images/ginasio-v119.png',
     videoUrl: 'https://vt.tiktok.com/ZS9tHa4Dg/'
   },
   {
@@ -228,23 +228,23 @@ export const TIKTOK_VIDEOS: TikTokVideoItem[] = [
     title: 'Ritual clássico de corte degradê e barba premium na Kapandula Barbearia. Detalhes contam',
     views: '33.1K',
     likes: '6.2K',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1621605815971-fbc98d665033?auto=format&fit=crop&w=600&q=80',
+    thumbnailUrl: '/images/barbearia-fachada.png',
     videoUrl: 'https://vt.tiktok.com/ZS9tHa4Dg/'
   },
   {
     id: 'v5',
-    title: 'Pratos de Fim-de-Semana no restaurante Kapandula: Moqueca angolana com pirão e requinte',
+    title: 'Restaurante com ambiente único — tecto de palha artesanal e gastronomia afro-internacional',
     views: '12.8K',
     likes: '2.1K',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=600&q=80',
+    thumbnailUrl: '/images/restaurante-interior.png',
     videoUrl: 'https://vt.tiktok.com/ZS9tHa4Dg/'
   },
   {
     id: 'v6',
-    title: 'Os bastidores de serviço excelente do staff Kapandula: Paixão por servir com orgulho angolano',
+    title: 'Kapandula Club — a icónica cúpula do Zango 8 com ambiente inigualável à noite',
     views: '21.7K',
     likes: '4.8K',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80',
+    thumbnailUrl: '/images/kapandula-club.png',
     videoUrl: 'https://vt.tiktok.com/ZS9tHa4Dg/'
   }
 ];

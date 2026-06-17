@@ -193,16 +193,18 @@ export default function App() {
     setIsGalleryOpen(true);
   };
 
-  // Pre-configured gallery list of rich African/Angolan hotelier premium photos
+  // Pre-configured gallery list — fotos reais do espaço Kapandula
   const premiumGallery = [
-    { url: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80', title: 'Fachada do Kapandula Hotel', tag: 'Hotel' },
-    { url: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=1200&q=80', title: 'Suíte Presidencial Deluxe 4★', tag: 'Hotel' },
-    { url: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1200&q=80', title: 'Restaurante Gourmet Almoço de Negócios', tag: 'Gastronomia' },
-    { url: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=1200&q=80', title: 'Salão de Festas Casa 300 Decorado', tag: 'Eventos' },
-    { url: 'https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?auto=format&fit=crop&w=1200&q=80', title: 'Banquete de Casamento Estilo Real', tag: 'Eventos' },
-    { url: 'https://images.unsplash.com/photo-1517502884422-41eaaced0168?auto=format&fit=crop&w=1200&q=80', title: 'Sala de Conferências Multimédia', tag: 'Eventos' },
-    { url: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1200&q=80', title: 'Área Wellness & Treino Pesado V119', tag: 'Fitness' },
-    { url: 'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=1200&q=80', title: 'Ritual de Barba com Vaporizadores de Ozono', tag: 'Beleza' },
+    { url: '/images/piscina-kapandula.png', title: 'Piscina Kapandula — Assinatura Exclusiva em Azulejo', tag: 'Hotel' },
+    { url: '/images/restaurante-interior.png', title: 'Restaurante com Tecto de Palha Artesanal', tag: 'Gastronomia' },
+    { url: '/images/cocktail-terrace.png', title: 'Cocktails Artesanais na Esplanada ao Pôr do Sol', tag: 'Gastronomia' },
+    { url: '/images/esplanada-eventos.png', title: 'Espaço de Eventos ao Ar Livre com Palmeiras', tag: 'Eventos' },
+    { url: '/images/esplanada-piscina.png', title: 'Esplanada Premium junto à Piscina', tag: 'Hotel' },
+    { url: '/images/kapandula-club.png', title: 'Kapandula Club — Cúpula Icónica', tag: 'Eventos' },
+    { url: '/images/barbearia-fachada.png', title: 'Kapandula Barbearia — Estilo e Requinte', tag: 'Beleza' },
+    { url: '/images/ginasio-v119.png', title: 'Ginásio V119 — Profissional Fitness', tag: 'Fitness' },
+    { url: '/images/kapandula-fachada.png', title: 'Entrada Principal Kapandula Group', tag: 'Hotel' },
+    { url: '/images/kapandula-sign.png', title: 'Kapandula — Identidade Dourada', tag: 'Hotel' },
   ];
 
   // Helper function to map design categorizations from image QuickNav
@@ -457,6 +459,97 @@ export default function App() {
             <span className="text-[10px] md:text-xs font-bold font-display uppercase tracking-[0.2em] text-neutral-500 group-hover:text-gold transition-colors">
               ATENDIMENTO
             </span>
+          </div>
+
+        </div>
+      </section>
+
+      {/* PHOTO SHOWCASE — O NOSSO ESPAÇO */}
+      <section className="max-w-[1280px] mx-auto px-6 md:px-12 py-14 md:py-20">
+        <div className="flex items-end justify-between border-b border-neutral-800 pb-5 mb-10">
+          <div>
+            <span className="text-gold text-[10px] uppercase font-display tracking-widest block mb-1">FOTOS REAIS DO ESPAÇO</span>
+            <h2 className="text-xl md:text-3xl font-extrabold font-display uppercase tracking-widest text-white-warm">
+              O NOSSO ESPAÇO
+            </h2>
+          </div>
+          <button
+            onClick={() => { setActiveGalleryImg(''); setGalleryTitle(''); setIsGalleryOpen(true); }}
+            className="text-neutral-400 hover:text-gold text-xs font-bold tracking-wider uppercase flex items-center gap-1 cursor-pointer transition-colors group"
+          >
+            Ver galeria <ArrowRight className="w-4 h-4 text-neutral-500 group-hover:text-gold transition-transform group-hover:translate-x-1" />
+          </button>
+        </div>
+
+        {/* Bento-style photo grid */}
+        <div className="grid grid-cols-2 md:grid-cols-4 grid-rows-2 gap-3 md:gap-4 h-[520px] md:h-[580px]">
+
+          {/* LARGE — Piscina (span 2 cols + 2 rows) */}
+          <div
+            onClick={() => handleOpenGallery('/images/piscina-kapandula.png', 'Piscina Kapandula — Assinatura Exclusiva em Azulejo')}
+            className="col-span-2 row-span-2 relative overflow-hidden rounded-2xl cursor-pointer group border border-neutral-800 hover:border-gold/40 transition-all duration-300"
+          >
+            <img src="/images/piscina-kapandula.png" alt="Piscina Kapandula" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black-deep/80 via-transparent to-transparent" />
+            <div className="absolute bottom-4 left-4 right-4">
+              <span className="text-gold text-[9px] font-display font-bold uppercase tracking-widest block mb-1">Hotel</span>
+              <h3 className="text-white-warm font-bold font-display text-sm md:text-base leading-tight">Piscina com Assinatura Kapandula</h3>
+            </div>
+            <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
+              <span className="bg-gold text-black-deep text-[9px] font-bold font-display uppercase tracking-wider px-2 py-1 rounded">Ampliar</span>
+            </div>
+          </div>
+
+          {/* Restaurante Interior */}
+          <div
+            onClick={() => handleOpenGallery('/images/restaurante-interior.png', 'Restaurante com Tecto de Palha Artesanal')}
+            className="col-span-1 row-span-1 relative overflow-hidden rounded-2xl cursor-pointer group border border-neutral-800 hover:border-gold/40 transition-all duration-300"
+          >
+            <img src="/images/restaurante-interior.png" alt="Restaurante" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black-deep/75 via-transparent to-transparent" />
+            <div className="absolute bottom-3 left-3 right-3">
+              <span className="text-gold text-[8px] font-display uppercase tracking-widest block">Gastronomia</span>
+              <p className="text-white-warm font-bold text-[11px] leading-tight line-clamp-1">Restaurante Gourmet</p>
+            </div>
+          </div>
+
+          {/* Cocktail Esplanada */}
+          <div
+            onClick={() => handleOpenGallery('/images/cocktail-terrace.png', 'Cocktails Artesanais na Esplanada ao Pôr do Sol')}
+            className="col-span-1 row-span-1 relative overflow-hidden rounded-2xl cursor-pointer group border border-neutral-800 hover:border-gold/40 transition-all duration-300"
+          >
+            <img src="/images/cocktail-terrace.png" alt="Cocktail" className="w-full h-full object-cover object-bottom transition-transform duration-700 group-hover:scale-105" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black-deep/75 via-transparent to-transparent" />
+            <div className="absolute bottom-3 left-3 right-3">
+              <span className="text-gold text-[8px] font-display uppercase tracking-widest block">Bar</span>
+              <p className="text-white-warm font-bold text-[11px] leading-tight line-clamp-1">Cocktails Artesanais</p>
+            </div>
+          </div>
+
+          {/* Barbearia */}
+          <div
+            onClick={() => handleOpenGallery('/images/barbearia-fachada.png', 'Kapandula Barbearia — Estilo e Requinte')}
+            className="col-span-1 row-span-1 relative overflow-hidden rounded-2xl cursor-pointer group border border-neutral-800 hover:border-gold/40 transition-all duration-300"
+          >
+            <img src="/images/barbearia-fachada.png" alt="Barbearia" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black-deep/75 via-transparent to-transparent" />
+            <div className="absolute bottom-3 left-3 right-3">
+              <span className="text-gold text-[8px] font-display uppercase tracking-widest block">Barbearia</span>
+              <p className="text-white-warm font-bold text-[11px] leading-tight line-clamp-1">Kapandula Barbearia</p>
+            </div>
+          </div>
+
+          {/* Esplanada Eventos */}
+          <div
+            onClick={() => handleOpenGallery('/images/esplanada-eventos.png', 'Espaço de Eventos ao Ar Livre com Palmeiras')}
+            className="col-span-1 row-span-1 relative overflow-hidden rounded-2xl cursor-pointer group border border-neutral-800 hover:border-gold/40 transition-all duration-300"
+          >
+            <img src="/images/esplanada-eventos.png" alt="Eventos" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black-deep/75 via-transparent to-transparent" />
+            <div className="absolute bottom-3 left-3 right-3">
+              <span className="text-gold text-[8px] font-display uppercase tracking-widest block">Eventos</span>
+              <p className="text-white-warm font-bold text-[11px] leading-tight line-clamp-1">Esplanada Casa 300</p>
+            </div>
           </div>
 
         </div>
