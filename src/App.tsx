@@ -301,7 +301,16 @@ export default function App() {
           </div>
 
           {/* Right Action buttons */}
-          <div className="hidden md:flex items-center gap-4">
+          <div className="hidden md:flex items-center gap-3">
+            <a
+              href="https://menu.kapandula.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-gold hover:text-black-deep bg-gold/10 hover:bg-gold px-4 py-2 rounded-lg border border-gold/40 hover:border-gold transition-all duration-300 shadow-sm"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+              Ver Menu
+            </a>
             <a
               href={`https://wa.me/${whatsappConfig.primary.replace('+', '')}?text=${encodeURIComponent('Olá! Gostaria de obter mais informações sobre o Kapandula Group.')}`}
               target="_blank"
@@ -400,6 +409,16 @@ export default function App() {
             >
               Contactos
             </button>
+            <a
+              href="https://menu.kapandula.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="flex items-center justify-center gap-2 text-gold border border-gold/40 rounded-xl py-3 px-6 font-bold text-sm uppercase tracking-widest hover:bg-gold hover:text-black-deep transition-all"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+              Ver Menu
+            </a>
             <button 
               onClick={() => { handleAdminAccess(); setIsMobileMenuOpen(false); }}
               className="text-neutral-700 hover:text-neutral-500 py-1 text-[10px] italic normal-case cursor-pointer tracking-wider"
