@@ -42,11 +42,11 @@ export const SERVICES: ServiceDetailItem[] = [
     id: 'hospedagem',
     brandId: 'hotel',
     title: 'Suítes Deluxe & Quartos Clássicos',
-    subtitle: 'Acomodação premium 4 estrelas no Zango 8',
+    subtitle: 'Acomodação premium 4 estrelas no Zango 8 — 25.000 Kz / Noite',
     description: 'Quartos projetados com refinamento e conforto acústico. Camas king-size ortopédicas de qualidade superior, secretária de trabalho, ar-condicionado silencioso, frigobar abastecido com bebidas locais e importadas, casa de banho privativa com duche de massagem e Wi-Fi de alta velocidade ultra-veloz.',
     imageUrl: '/images/kapandula-fachada.png',
     features: ['Pequeno-almoço executivo incluído', 'Apoio de Quarto 24 Horas', 'Ar condicionado inteligente', 'Cofre eletrónico digital', 'Televisão por satélite Unitel/DSTV'],
-    pricingRange: 'Desde 45.000 Kz / Noite'
+    pricingRange: 'A partir de 25.000 Kz / Noite (30 USD para clientes estrangeiros)'
   },
   {
     id: 'gastronomia',
