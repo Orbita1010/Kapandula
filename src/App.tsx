@@ -24,7 +24,6 @@ import type { ServiceDetailItem, UpcomingEventItem, TestimonialItem, TikTokVideo
 import BookingFlow from './components/BookingFlow';
 import BrandPage from './components/BrandPage';
 import WhatsAppFloat from './components/WhatsAppFloat';
-import DebugBanner from './components/DebugBanner';
 import HeroSection from './components/HeroSection';
 import QuickNav from './components/QuickNav';
 import KLogo from './components/KLogo';
@@ -227,25 +226,26 @@ export default function App() {
   };
 
   useEffect(() => {
-    const hash = window.location.hash;
-    if (hash.startsWith(BRAND_PAGE_HASH_PREFIX)) {
-      const brandId = hash.replace(BRAND_PAGE_HASH_PREFIX, '') as BrandPageId;
-      if (['hotel', 'eventos', 'fitness', 'barbearia'].includes(brandId)) {
-        setSelectedBrandPage(brandId);
+    const syncBrandPageFromHash = () => {
+      const hash = window.location.hash;
+      if (hash.startsWith(BRAND_PAGE_HASH_PREFIX)) {
+        const brandId = hash.replace(BRAND_PAGE_HASH_PREFIX, '') as BrandPageId;
+        if (['hotel', 'eventos', 'fitness', 'barbearia'].includes(brandId)) {
+          setSelectedBrandPage(brandId);
+          return;
+        }
       }
-    }
-  }, []);
+      setSelectedBrandPage(null);
+    };
 
-  useEffect(() => {
-    if (selectedBrandPage) {
-      window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}${BRAND_PAGE_HASH_PREFIX}${selectedBrandPage}`);
-    } else {
-      window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
-    }
-  }, [selectedBrandPage]);
+    syncBrandPageFromHash();
+    window.addEventListener('popstate', syncBrandPageFromHash);
+    return () => window.removeEventListener('popstate', syncBrandPageFromHash);
+  }, []);
 
   const openBrandPage = (brandId: BrandPageId) => {
     setSelectedBrandPage(brandId);
+    window.history.pushState(null, '', `${window.location.pathname}${window.location.search}${BRAND_PAGE_HASH_PREFIX}${brandId}`);
     setIsMobileMenuOpen(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -1280,9 +1280,6 @@ export default function App() {
 
       {/* WHATSAPP FLOATING BADGE */}
       <WhatsAppFloat />
-
-      {/* DEBUG BANNER (temporary) */}
-      <DebugBanner />
 
       {/* SCROLL TO TOP BUTTON */}
       {showScrollTop && (
