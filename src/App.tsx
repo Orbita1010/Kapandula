@@ -24,6 +24,7 @@ import type { ServiceDetailItem, UpcomingEventItem, TestimonialItem, TikTokVideo
 import BookingFlow from './components/BookingFlow';
 import BrandPage from './components/BrandPage';
 import WhatsAppFloat from './components/WhatsAppFloat';
+import DebugBanner from './components/DebugBanner';
 import HeroSection from './components/HeroSection';
 import QuickNav from './components/QuickNav';
 import KLogo from './components/KLogo';
@@ -1279,6 +1280,9 @@ export default function App() {
 
       {/* WHATSAPP FLOATING BADGE */}
       <WhatsAppFloat />
+
+      {/* DEBUG BANNER (temporary) */}
+      <DebugBanner />
 
       {/* SCROLL TO TOP BUTTON */}
       {showScrollTop && (
