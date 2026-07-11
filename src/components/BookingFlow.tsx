@@ -124,6 +124,9 @@ export default function BookingFlow({ isOpen, onClose, initialService = 'hotel' 
       <div 
         className="relative bg-black-card border-2 border-gold/35 w-full max-w-lg rounded-2xl overflow-hidden shadow-2xl bg-grain flex flex-col max-h-[90vh]"
         id="booking_flow_modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="booking-flow-title"
       >
         {/* Golden top progress indicator bar */}
         <div className="h-1.5 w-full bg-neutral-800 relative">
@@ -137,7 +140,7 @@ export default function BookingFlow({ isOpen, onClose, initialService = 'hotel' 
         <div className="flex items-center justify-between p-5 border-b border-gold/15">
           <div>
             <span className="text-gold text-[10px] uppercase tracking-widest font-display block mb-1">Passo {step} de 3</span>
-            <h3 className="text-white-warm text-lg font-bold font-display tracking-wide">
+            <h3 id="booking-flow-title" className="text-white-warm text-lg font-bold font-display tracking-wide">
               {step === 1 && 'Selecione o Serviço Desejado'}
               {step === 2 && 'Detalhes do Seu Agendamento'}
               {step === 3 && 'Tudo pronto para Enviar!'}

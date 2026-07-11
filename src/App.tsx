@@ -22,6 +22,7 @@ import {
 import { BRANDS, SERVICES, UPCOMING_EVENTS, TESTIMONIALS, TIKTOK_VIDEOS, WHATSAPP_CONFIG } from './data';
 import type { ServiceDetailItem, UpcomingEventItem, TestimonialItem, TikTokVideoItem } from './types';
 import BookingFlow from './components/BookingFlow';
+import BrandPage from './components/BrandPage';
 import WhatsAppFloat from './components/WhatsAppFloat';
 import HeroSection from './components/HeroSection';
 import QuickNav from './components/QuickNav';
@@ -31,10 +32,14 @@ import AdminDashboard from './components/AdminDashboard';
 
 const FALLBACK_SERVICE_IMAGE = '/images/piscina-kapandula.png';
 
+type BrandPageId = 'hotel' | 'eventos' | 'fitness' | 'barbearia';
+
 export default function App() {
   // Booking modal state
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [selectedServiceId, setSelectedServiceId] = useState('hotel');
+  const [selectedBrandPage, setSelectedBrandPage] = useState<BrandPageId | null>(null);
+  const BRAND_PAGE_HASH_PREFIX = '#brand=';
   
   // Custom navigation category filtering state
   const [activeCategory, setActiveCategory] = useState('all'); // 'all', 'hotel', 'eventos', 'conferencia', 'ginasio', 'barbearia', 'salao'
@@ -220,6 +225,30 @@ export default function App() {
     setIsBookingOpen(true);
   };
 
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (hash.startsWith(BRAND_PAGE_HASH_PREFIX)) {
+      const brandId = hash.replace(BRAND_PAGE_HASH_PREFIX, '') as BrandPageId;
+      if (['hotel', 'eventos', 'fitness', 'barbearia'].includes(brandId)) {
+        setSelectedBrandPage(brandId);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (selectedBrandPage) {
+      window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}${BRAND_PAGE_HASH_PREFIX}${selectedBrandPage}`);
+    } else {
+      window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
+    }
+  }, [selectedBrandPage]);
+
+  const openBrandPage = (brandId: BrandPageId) => {
+    setSelectedBrandPage(brandId);
+    setIsMobileMenuOpen(false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const handleOpenGallery = (imgUrl: string, title: string) => {
     setActiveGalleryImg(imgUrl);
     setGalleryTitle(title);
@@ -273,6 +302,12 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-black-deep text-white-warm flex flex-col selection:bg-gold selection:text-black-deep bg-grain font-sans antialiased">
+      <a
+        href="#hero_slider"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[12000] focus:rounded-lg focus:bg-gold focus:px-4 focus:py-2 focus:text-sm focus:font-bold focus:text-black-deep"
+      >
+        Saltar para o conteúdo principal
+      </a>
       {/* Toast Alert popup indicator */}
       {toastMessage && (
         <div className="fixed top-24 left-1/2 -translate-x-1/2 z-[10001] bg-black-card border-2 border-gold text-white-warm px-5 py-3 rounded-xl shadow-2xl flex items-center gap-3 animate-bounce">
@@ -350,6 +385,8 @@ export default function App() {
             onClick={() => setIsMobileMenuOpen(true)}
             className="md:hidden text-gold hover:text-gold-light p-1.5 cursor-pointer"
             aria-label="Abrir menu"
+            aria-expanded={isMobileMenuOpen}
+            aria-controls="mobile-nav-menu"
           >
             <Menu className="w-6 h-6" />
           </button>
@@ -362,26 +399,35 @@ export default function App() {
         onLoginSuccess={handleLoginSuccess}
       />
 
-      {isAdminDashboardOpen && (
-        <AdminDashboard
-          events={events}
-          services={services}
-          testimonials={testimonials}
-          tiktokVideos={tiktokVideos}
+      {selectedBrandPage ? (
+        <BrandPage
+          brandId={selectedBrandPage}
+          onBack={() => setSelectedBrandPage(null)}
+          onBook={handleOpenBooking}
           whatsappConfig={whatsappConfig}
-          onClose={() => setIsAdminDashboardOpen(false)}
-          onLogout={handleLogout}
-          onSaveEvents={handleSaveEvents}
-          onSaveServices={handleSaveServices}
-          onSaveTestimonials={handleSaveTestimonials}
-          onSaveVideos={handleSaveTikTokVideos}
-          onSaveWhatsApp={handleSaveWhatsAppConfig}
         />
-      )}
+      ) : (
+        <>
+          {isAdminDashboardOpen && (
+            <AdminDashboard
+              events={events}
+              services={services}
+              testimonials={testimonials}
+              tiktokVideos={tiktokVideos}
+              whatsappConfig={whatsappConfig}
+              onClose={() => setIsAdminDashboardOpen(false)}
+              onLogout={handleLogout}
+              onSaveEvents={handleSaveEvents}
+              onSaveServices={handleSaveServices}
+              onSaveTestimonials={handleSaveTestimonials}
+              onSaveVideos={handleSaveTikTokVideos}
+              onSaveWhatsApp={handleSaveWhatsAppConfig}
+            />
+          )}
 
-      {/* MOBILE FULLSCREEN SIDE DRAWER MENU */}
+          {/* MOBILE FULLSCREEN SIDE DRAWER MENU */}
       {isMobileMenuOpen && (
-        <div className="fixed inset-0 z-[1001] bg-black-deep flex flex-col justify-between p-6 animate-fade-in">
+        <div id="mobile-nav-menu" role="dialog" aria-modal="true" aria-label="Menu de navegação" className="fixed inset-0 z-[1001] bg-black-deep flex flex-col justify-between p-6 animate-fade-in">
           {/* Header row in mobile drawer */}
           <div className="flex items-center justify-between">
             <span className="text-xl font-bold font-display tracking-widest text-white-warm">
@@ -550,7 +596,7 @@ export default function App() {
             onClick={() => handleOpenGallery('/images/piscina-kapandula.png', 'Piscina Kapandula — Assinatura Exclusiva em Azulejo')}
             className="col-span-2 row-span-2 relative overflow-hidden rounded-2xl cursor-pointer group border border-neutral-800 hover:border-gold/40 transition-all duration-300"
           >
-            <img src="/images/piscina-kapandula.png" alt="Piscina Kapandula" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+            <img src="/images/piscina-kapandula.png" alt="Piscina Kapandula" loading="lazy" decoding="async" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
             <div className="absolute inset-0 bg-gradient-to-t from-black-deep/80 via-transparent to-transparent" />
             <div className="absolute bottom-4 left-4 right-4">
               <span className="text-gold text-[9px] font-display font-bold uppercase tracking-widest block mb-1">Hotel</span>
@@ -566,7 +612,7 @@ export default function App() {
             onClick={() => handleOpenGallery('/images/restaurante-interior.png', 'Restaurante com Tecto de Palha Artesanal')}
             className="col-span-1 row-span-1 relative overflow-hidden rounded-2xl cursor-pointer group border border-neutral-800 hover:border-gold/40 transition-all duration-300"
           >
-            <img src="/images/restaurante-interior.png" alt="Restaurante" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+            <img src="/images/restaurante-interior.png" alt="Restaurante" loading="lazy" decoding="async" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
             <div className="absolute inset-0 bg-gradient-to-t from-black-deep/75 via-transparent to-transparent" />
             <div className="absolute bottom-3 left-3 right-3">
               <span className="text-gold text-[8px] font-display uppercase tracking-widest block">Gastronomia</span>
@@ -579,7 +625,7 @@ export default function App() {
             onClick={() => handleOpenGallery('/images/cocktail-terrace.png', 'Cocktails Artesanais na Esplanada ao Pôr do Sol')}
             className="col-span-1 row-span-1 relative overflow-hidden rounded-2xl cursor-pointer group border border-neutral-800 hover:border-gold/40 transition-all duration-300"
           >
-            <img src="/images/cocktail-terrace.png" alt="Cocktail" className="w-full h-full object-cover object-bottom transition-transform duration-700 group-hover:scale-105" />
+            <img src="/images/cocktail-terrace.png" alt="Cocktail" loading="lazy" decoding="async" className="w-full h-full object-cover object-bottom transition-transform duration-700 group-hover:scale-105" />
             <div className="absolute inset-0 bg-gradient-to-t from-black-deep/75 via-transparent to-transparent" />
             <div className="absolute bottom-3 left-3 right-3">
               <span className="text-gold text-[8px] font-display uppercase tracking-widest block">Bar</span>
@@ -592,7 +638,7 @@ export default function App() {
             onClick={() => handleOpenGallery('/images/barbearia-fachada.png', 'Kapandula Barbearia — Estilo e Requinte')}
             className="col-span-1 row-span-1 relative overflow-hidden rounded-2xl cursor-pointer group border border-neutral-800 hover:border-gold/40 transition-all duration-300"
           >
-            <img src="/images/barbearia-fachada.png" alt="Barbearia" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+            <img src="/images/barbearia-fachada.png" alt="Barbearia" loading="lazy" decoding="async" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
             <div className="absolute inset-0 bg-gradient-to-t from-black-deep/75 via-transparent to-transparent" />
             <div className="absolute bottom-3 left-3 right-3">
               <span className="text-gold text-[8px] font-display uppercase tracking-widest block">Barbearia</span>
@@ -605,7 +651,7 @@ export default function App() {
             onClick={() => handleOpenGallery('/images/esplanada-eventos.png', 'Espaço de Eventos ao Ar Livre com Palmeiras')}
             className="col-span-1 row-span-1 relative overflow-hidden rounded-2xl cursor-pointer group border border-neutral-800 hover:border-gold/40 transition-all duration-300"
           >
-            <img src="/images/esplanada-eventos.png" alt="Eventos" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+            <img src="/images/esplanada-eventos.png" alt="Eventos" loading="lazy" decoding="async" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
             <div className="absolute inset-0 bg-gradient-to-t from-black-deep/75 via-transparent to-transparent" />
             <div className="absolute bottom-3 left-3 right-3">
               <span className="text-gold text-[8px] font-display uppercase tracking-widest block">Eventos</span>
@@ -643,7 +689,7 @@ export default function App() {
           
           {/* CARD 1: Kapandula Hotel */}
           <div 
-            onClick={() => handleOpenBooking('hotel')}
+            onClick={() => openBrandPage('hotel')}
             className={`bg-zinc-950 hover:bg-zinc-900 border border-neutral-800 rounded-xl p-6 flex flex-col justify-between transition-all duration-300 transform hover:-translate-y-1 cursor-pointer group ${
               activeCategory !== 'all' && activeCategory !== 'hotel' ? 'opacity-30' : 'opacity-100'
             }`}
@@ -668,7 +714,7 @@ export default function App() {
 
           {/* CARD 2: Casa 300 */}
           <div 
-            onClick={() => handleOpenBooking('eventos')}
+            onClick={() => openBrandPage('eventos')}
             className={`bg-zinc-950 hover:bg-zinc-900 border border-neutral-800 rounded-xl p-6 flex flex-col justify-between transition-all duration-300 transform hover:-translate-y-1 cursor-pointer group ${
               activeCategory !== 'all' && activeCategory !== 'eventos' ? 'opacity-30' : 'opacity-100'
             }`}
@@ -693,7 +739,7 @@ export default function App() {
 
           {/* CARD 3: Ginásio V119 */}
           <div 
-            onClick={() => handleOpenBooking('ginasio')}
+            onClick={() => openBrandPage('fitness')}
             className={`bg-zinc-950 hover:bg-zinc-900 border border-neutral-800 rounded-xl p-6 flex flex-col justify-between transition-all duration-300 transform hover:-translate-y-1 cursor-pointer group ${
               activeCategory !== 'all' && activeCategory !== 'fitness' ? 'opacity-30' : 'opacity-100'
             }`}
@@ -718,7 +764,7 @@ export default function App() {
 
           {/* CARD 4: Barbearia */}
           <div 
-            onClick={() => handleOpenBooking('barbearia')}
+            onClick={() => openBrandPage('barbearia')}
             className={`bg-zinc-950 hover:bg-zinc-900 border border-neutral-800 rounded-xl p-6 flex flex-col justify-between transition-all duration-300 transform hover:-translate-y-1 cursor-pointer group ${
               activeCategory !== 'all' && activeCategory !== 'barbearia' ? 'opacity-30' : 'opacity-100'
             }`}
@@ -1165,7 +1211,7 @@ export default function App() {
 
       {/* GALLERY LIGHTBOX MODAL */}
       {isGalleryOpen && (
-        <div className="fixed inset-0 z-[10001] bg-black-deep/95 backdrop-blur-md flex flex-col justify-between p-4">
+        <div role="dialog" aria-modal="true" aria-label="Galeria de imagens Kapandula" className="fixed inset-0 z-[10001] bg-black-deep/95 backdrop-blur-md flex flex-col justify-between p-4">
           
           {/* Close command */}
           <div className="flex items-center justify-between p-4">
@@ -1185,6 +1231,8 @@ export default function App() {
                 <img 
                   src={activeGalleryImg} 
                   alt={galleryTitle} 
+                  loading="eager"
+                  decoding="async"
                   className="max-h-[70vh] w-auto max-w-full rounded-lg object-contain mx-auto border border-gold/20"
                 />
                 <h4 className="text-center font-bold text-sm text-white-warm font-display">{galleryTitle}</h4>
@@ -1199,7 +1247,7 @@ export default function App() {
                     className="group cursor-pointer bg-neutral-900 rounded-lg overflow-hidden border border-neutral-800 hover:border-gold/40 transition-all text-left"
                   >
                     <div className="h-32 overflow-hidden">
-                      <img src={p.url} alt={p.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                      <img src={p.url} alt={p.title} loading="lazy" decoding="async" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                     </div>
                     <div className="p-3">
                       <span className="text-gold text-[8px] font-mono uppercase tracking-widest block">{p.tag}</span>
