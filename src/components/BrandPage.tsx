@@ -101,10 +101,6 @@ export default function BrandPage({ brandId, onBack, onBook, whatsappConfig }: B
         </div>
 
         <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] items-start">
-          <ArrowLeft className="w-4 h-4" /> Voltar para a página inicial
-        </button>
-
-        <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] items-start">
           <div className="space-y-6">
             <div className="space-y-4">
               <span className="inline-flex items-center gap-2 rounded-full bg-gold/10 px-4 py-2 text-xs uppercase tracking-[0.35em] text-gold font-bold">
