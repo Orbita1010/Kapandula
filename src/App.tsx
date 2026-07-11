@@ -1272,7 +1272,7 @@ export default function App() {
           </div>
 
         </div>
-      )}
+        </>
 
       {/* WHATSAPP FLOATING BADGE */}
       <WhatsAppFloat />
