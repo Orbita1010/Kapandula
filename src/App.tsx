@@ -243,6 +243,14 @@ export default function App() {
     return () => window.removeEventListener('popstate', syncBrandPageFromHash);
   }, []);
 
+  const closeBrandPage = () => {
+    setSelectedBrandPage(null);
+    const nextUrl = `${window.location.pathname}${window.location.search}`;
+    window.history.replaceState(null, '', nextUrl);
+    setIsMobileMenuOpen(false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const openBrandPage = (brandId: BrandPageId) => {
     setSelectedBrandPage(brandId);
     window.history.pushState(null, '', `${window.location.pathname}${window.location.search}${BRAND_PAGE_HASH_PREFIX}${brandId}`);
@@ -403,8 +411,9 @@ export default function App() {
       {selectedBrandPage ? (
         <BrandPage
           brandId={selectedBrandPage}
-          onBack={() => setSelectedBrandPage(null)}
+          onBack={closeBrandPage}
           onBook={handleOpenBooking}
+          onSelectBrand={openBrandPage}
           whatsappConfig={whatsappConfig}
         />
       ) : (

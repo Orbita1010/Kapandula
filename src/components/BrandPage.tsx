@@ -8,6 +8,7 @@ interface BrandPageProps {
   brandId: BrandPageId;
   onBack: () => void;
   onBook: (serviceId: string) => void;
+  onSelectBrand: (brandId: BrandPageId) => void;
   whatsappConfig: typeof WHATSAPP_CONFIG;
 }
 
@@ -57,7 +58,7 @@ const pricingDetailsById: Record<BrandPageId, Array<{ title: string; value: stri
   ]
 };
 
-export default function BrandPage({ brandId, onBack, onBook, whatsappConfig }: BrandPageProps) {
+export default function BrandPage({ brandId, onBack, onBook, onSelectBrand, whatsappConfig }: BrandPageProps) {
   const brand = BRANDS.find((item) => item.id === brandId);
   if (!brand) return null;
 
@@ -72,14 +73,36 @@ export default function BrandPage({ brandId, onBack, onBook, whatsappConfig }: B
 
   return (
     <div className="min-h-screen bg-black-deep text-white-warm selection:bg-gold selection:text-black-deep">
-      <div className="max-w-[1280px] mx-auto px-6 md:px-12 py-10">
-        <button
-          type="button"
-          onClick={onBack}
-          className="inline-flex items-center gap-2 text-neutral-300 hover:text-gold text-sm font-bold mb-8"
-        >
-          <ArrowLeft className="w-4 h-4" /> Voltar para a página inicial
-        </button>
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 md:px-12 py-6 sm:py-10 pb-24 sm:pb-10">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-6 sm:mb-8">
+          <button
+            type="button"
+            onClick={onBack}
+            className="inline-flex items-center justify-center gap-2 rounded-full border border-neutral-800 bg-black-card/80 px-4 py-2.5 text-sm font-bold text-neutral-300 hover:text-gold hover:border-gold/40 transition-all w-full sm:w-auto"
+          >
+            <ArrowLeft className="w-4 h-4" /> Voltar à página inicial
+          </button>
+
+          <div className="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
+            {BRANDS.map((item) => {
+              const active = item.id === brandId;
+              return (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => onSelectBrand(item.id as BrandPageId)}
+                  className={`whitespace-nowrap rounded-full border px-3 py-2 text-[11px] font-bold uppercase tracking-[0.25em] transition-all ${
+                    active
+                      ? 'border-gold bg-gold text-black-deep'
+                      : 'border-neutral-800 bg-black-card/70 text-neutral-300 hover:border-gold/40 hover:text-gold'
+                  }`}
+                >
+                  {item.name.replace('Kapandula ', '')}
+                </button>
+              );
+            })}
+          </div>
+        </div>
 
         <div className="overflow-hidden rounded-[2rem] border border-neutral-800 bg-black-card mb-10 shadow-2xl">
           <div className="relative h-72 md:h-96">
@@ -110,19 +133,19 @@ export default function BrandPage({ brandId, onBack, onBook, whatsappConfig }: B
               <p className="max-w-2xl text-neutral-300 leading-relaxed text-sm md:text-base">{brand.description}</p>
             </div>
 
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid gap-3 sm:grid-cols-2">
               <a
                 href={ticketLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-2xl border border-gold/20 bg-gold/10 px-6 py-4 text-sm font-semibold uppercase tracking-[0.25em] text-gold shadow-xl shadow-gold/10 transition-all hover:bg-gold hover:text-black-deep"
+                className="w-full rounded-2xl border border-gold/20 bg-gold/10 px-6 py-4 text-center text-sm font-semibold uppercase tracking-[0.25em] text-gold shadow-xl shadow-gold/10 transition-all hover:bg-gold hover:text-black-deep"
               >
                 Contactar por WhatsApp
               </a>
               <button
                 type="button"
                 onClick={() => onBook(heroCta())}
-                className="rounded-2xl bg-gold px-6 py-4 text-sm font-semibold uppercase tracking-[0.25em] text-black-deep transition-all hover:bg-[#ffdf7f]"
+                className="w-full rounded-2xl bg-gold px-6 py-4 text-sm font-semibold uppercase tracking-[0.25em] text-black-deep transition-all hover:bg-[#ffdf7f]"
               >
                 Reservar agora
               </button>
@@ -226,6 +249,23 @@ export default function BrandPage({ brandId, onBack, onBook, whatsappConfig }: B
             </div>
           </aside>
         </div>
+      </div>
+
+      <div className="fixed inset-x-4 bottom-4 z-50 flex gap-2 rounded-2xl border border-gold/20 bg-black-card/95 p-2 shadow-2xl backdrop-blur sm:hidden">
+        <button
+          type="button"
+          onClick={onBack}
+          className="flex-1 rounded-xl border border-neutral-800 px-4 py-3 text-sm font-bold uppercase tracking-[0.25em] text-neutral-300"
+        >
+          Voltar
+        </button>
+        <button
+          type="button"
+          onClick={() => onBook(heroCta())}
+          className="flex-1 rounded-xl bg-gold px-4 py-3 text-sm font-bold uppercase tracking-[0.25em] text-black-deep"
+        >
+          Reservar
+        </button>
       </div>
     </div>
   );
