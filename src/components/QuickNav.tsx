@@ -20,7 +20,7 @@ export default function QuickNav({ activeBrand, onBrandChange }: QuickNavProps) 
                 : 'bg-black-deep text-neutral-300 border-neutral-800 hover:border-gold/50 hover:text-white-warm'
             }`}
           >
-            🌟 Ver Todos os Serviços
+            Ver Todos os Serviços
           </button>
 
           {BRANDS.map((brand) => (

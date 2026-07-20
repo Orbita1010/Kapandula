@@ -1,4 +1,4 @@
-import { ArrowLeft, Calendar, Phone, MapPin } from 'lucide-react';
+import { ArrowLeft, Calendar, Phone, MapPin, X } from 'lucide-react';
 import { BRANDS, SERVICES, UPCOMING_EVENTS, WHATSAPP_CONFIG } from '../data';
 import type { ServiceDetailItem, TikTokVideoItem, UpcomingEventItem } from '../types';
 
@@ -75,13 +75,23 @@ export default function BrandPage({ brandId, onBack, onBook, onSelectBrand, what
     <div className="min-h-screen bg-black-deep text-white-warm selection:bg-gold selection:text-black-deep">
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 md:px-12 py-6 sm:py-10 pb-24 sm:pb-10">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-6 sm:mb-8">
-          <button
-            type="button"
-            onClick={onBack}
-            className="inline-flex items-center justify-center gap-2 rounded-full border border-neutral-800 bg-black-card/80 px-4 py-2.5 text-sm font-bold text-neutral-300 hover:text-gold hover:border-gold/40 transition-all w-full sm:w-auto"
-          >
-            <ArrowLeft className="w-4 h-4" /> Voltar à página inicial
-          </button>
+          <div className="flex items-center gap-3 w-full sm:w-auto">
+            <button
+              type="button"
+              onClick={onBack}
+              className="inline-flex items-center justify-center gap-2 rounded-full border border-neutral-800 bg-black-card/80 px-4 py-2.5 text-sm font-bold text-neutral-300 hover:text-gold hover:border-gold/40 transition-all flex-1 sm:flex-none"
+            >
+              <ArrowLeft className="w-4 h-4" /> Voltar
+            </button>
+            <button
+              type="button"
+              onClick={onBack}
+              className="inline-flex items-center justify-center rounded-full border border-neutral-800 bg-black-card/80 px-3 py-2 text-sm font-bold text-neutral-300 hover:text-gold hover:border-gold/40 transition-all"
+              aria-label="Fechar página de sessão"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
 
           <div className="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
             {BRANDS.map((item) => {

@@ -6,7 +6,7 @@ export const BRANDS: BrandInfo[] = [
     name: 'Kapandula Hotel',
     tagline: 'Conforto a 4 estrelas, no coração de Luanda',
     description: 'Um novo conceito de sofisticação hoteleira no Zango 8. Oferecemos quartos de alto padrão, executive lounges, salas de reuniões equipadas e uma gastronomia de fusão internacional e africana irresistível.',
-    symbol: '🏨',
+    symbol: 'Hotel',
     stars: 4,
     highlightImage: '/images/piscina-kapandula.png'
   },
@@ -15,7 +15,7 @@ export const BRANDS: BrandInfo[] = [
     name: 'Casa 300',
     tagline: 'O seu momento especial merece o melhor espaço',
     description: 'O salão de festas e eventos premium do Zango 8. Ideal para casamentos luxuosos, banquetes de gala, seminários corporativos e aniversários intimistas com equipamentos multimédia topo de gama.',
-    symbol: '🎉',
+    symbol: 'Eventos',
     highlightImage: '/images/esplanada-eventos.png'
   },
   {
@@ -23,7 +23,7 @@ export const BRANDS: BrandInfo[] = [
     name: 'Ginásio V119',
     tagline: 'O seu corpo, a nossa missão de saúde',
     description: 'O mais bem equipado espaço fitness da região de Luanda. Treine com pesos de alta performance, zona de cardio de última geração, aulas de grupo guiadas e acompanhamento personalizado com treinadores certificados.',
-    symbol: '💪',
+    symbol: 'Fitness',
     highlightImage: '/images/ginasio-v119.png'
   },
   {
@@ -31,7 +31,7 @@ export const BRANDS: BrandInfo[] = [
     name: 'Kapandula Barbearia',
     tagline: 'Visual impecável para o homem angolano moderno',
     description: 'Uma barbearia premium e spa masculino no Zango 8. Técnicas modernas de corte de cabelo, rituais tradicionais de barba com toalha quente, manicure e tratamentos capilares sob medida.',
-    symbol: '✂️',
+    symbol: 'Barbearia',
     highlightImage: '/images/barbearia-fachada.png'
   }
 ];

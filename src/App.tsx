@@ -14,10 +14,13 @@ import {
   Compass, 
   CheckCircle, 
   Star,
-  PartyPopper,
   ShieldAlert,
   Search,
-  ChevronRight
+  ChevronRight,
+  Building2,
+  CalendarDays,
+  Dumbbell,
+  Scissors
 } from 'lucide-react';
 import { BRANDS, SERVICES, UPCOMING_EVENTS, TESTIMONIALS, TIKTOK_VIDEOS, WHATSAPP_CONFIG } from './data';
 import type { ServiceDetailItem, UpcomingEventItem, TestimonialItem, TikTokVideoItem } from './types';
@@ -196,6 +199,9 @@ export default function App() {
   };
 
   const scrollToSection = (ref: React.RefObject<HTMLDivElement | null> | null) => {
+    if (selectedBrandPage) {
+      closeBrandPage();
+    }
     if (!ref) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
       setIsMobileMenuOpen(false);
@@ -454,7 +460,7 @@ export default function App() {
           {/* Big responsive center links matching luxury Angola standard */}
           <div className="flex flex-col items-center gap-6 text-lg font-bold font-display uppercase tracking-widest my-auto text-center">
             <button 
-              onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); setIsMobileMenuOpen(false); }}
+              onClick={() => scrollToSection(null)}
               className="text-gold py-2 cursor-pointer"
             >
               Início
@@ -706,7 +712,7 @@ export default function App() {
           >
             <div>
               <div className="w-12 h-12 rounded-lg bg-neutral-900 flex items-center justify-center text-2xl border border-neutral-800/80 mb-6 group-hover:border-gold/30 transition-all">
-                🏨
+                <Building2 className="w-6 h-6 text-gold" />
               </div>
               <h3 className="text-base font-bold font-display text-white-warm group-hover:text-gold transition-colors mb-2">
                 Kapandula Hotel
@@ -731,7 +737,7 @@ export default function App() {
           >
             <div>
               <div className="w-12 h-12 rounded-lg bg-neutral-900 flex items-center justify-center text-2xl border border-neutral-800/80 mb-6 group-hover:border-gold/30 transition-all">
-                🎉
+                <CalendarDays className="w-6 h-6 text-gold" />
               </div>
               <h3 className="text-base font-bold font-display text-white-warm group-hover:text-gold transition-colors mb-2">
                 Casa 300
@@ -756,7 +762,7 @@ export default function App() {
           >
             <div>
               <div className="w-12 h-12 rounded-lg bg-neutral-900 flex items-center justify-center text-2xl border border-neutral-800/80 mb-6 group-hover:border-gold/30 transition-all">
-                💪
+                <Dumbbell className="w-6 h-6 text-gold" />
               </div>
               <h3 className="text-base font-bold font-display text-white-warm group-hover:text-gold transition-colors mb-2">
                 Ginásio V119
@@ -781,7 +787,7 @@ export default function App() {
           >
             <div>
               <div className="w-12 h-12 rounded-lg bg-neutral-900 flex items-center justify-center text-2xl border border-neutral-800/80 mb-6 group-hover:border-gold/30 transition-all">
-                ✂️
+                <Scissors className="w-6 h-6 text-gold" />
               </div>
               <h3 className="text-base font-bold font-display text-white-warm group-hover:text-gold transition-colors mb-2">
                 Barbearia
@@ -806,11 +812,11 @@ export default function App() {
           </h4>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-neutral-400">
             <div>
-              <p className="font-semibold text-white-warm mb-1">⭐ Excelência e Atendimento</p>
+              <p className="font-semibold text-white-warm mb-1">Excelência e Atendimento</p>
               <p>Os serviços Kapandula funcionam sob regulação estrita de hotelaria premium 4 estrelas. O nosso staff é formado para fornecer a melhor experiência de Luanda.</p>
             </div>
             <div>
-              <p className="font-semibold text-white-warm mb-1">📍 Reservas via Web</p>
+              <p className="font-semibold text-white-warm mb-1">Reservas via Web</p>
               <p>Qualquer reserva efetuada gera uma mensagem otimizada que é encaminhada de forma expedita para o nosso staff principal via WhatsApp Business.</p>
             </div>
           </div>

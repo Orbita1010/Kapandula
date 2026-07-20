@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { X, Check, Calendar, Users, Phone, User, MessageSquare, ArrowRight, ArrowLeft } from 'lucide-react';
+import { X, Check, Calendar, Users, Phone, User, MessageSquare, ArrowRight, ArrowLeft, Building2, Coffee, CalendarDays, Briefcase, Dumbbell, Scissors, Sparkles } from 'lucide-react';
 import { BookingFormState, ServiceDetailItem } from '../types';
 import { WHATSAPP_CONFIG } from '../data';
 
@@ -79,14 +79,14 @@ export default function BookingFlow({ isOpen, onClose, initialService = 'hotel' 
 
   const getServiceLabel = (id: string) => {
     const labels: Record<string, string> = {
-      hotel: '🏨 Kapandula Hotel — Hospedagem 4★',
-      gastronomia: '🍴 Kapandula Hotel — Almoço / Jantar',
-      eventos: '🎉 Casa 300 — Salão de Festas & Banquetes',
-      conferencia: '💼 Casa 300 — Sala de Conferências',
-      fitness: '💪 Ginásio V119 — Plano de Treino',
-      ginasio: '💪 Ginásio V119 — Plano de Treino',
-      barbearia: '✂️ Kapandula Barbearia — Corte & Estilo',
-      salao: '🌸 Kapandula Beleza — Tratamento Estético'
+      hotel: 'Kapandula Hotel — Hospedagem 4★',
+      gastronomia: 'Kapandula Hotel — Almoço / Jantar',
+      eventos: 'Casa 300 — Salão de Festas & Banquetes',
+      conferencia: 'Casa 300 — Sala de Conferências',
+      fitness: 'Ginásio V119 — Plano de Treino',
+      ginasio: 'Ginásio V119 — Plano de Treino',
+      barbearia: 'Kapandula Barbearia — Corte & Estilo',
+      salao: 'Kapandula Beleza — Tratamento Estético'
     };
     return labels[id] || id;
   };
@@ -109,14 +109,16 @@ export default function BookingFlow({ isOpen, onClose, initialService = 'hotel' 
   };
 
   const servicesList = [
-    { id: 'hotel', name: 'Hotelaria - Quarto Deluxe 4★', icon: '🏨', desc: 'Conforto e sofisticação no Zango' },
-    { id: 'gastronomia', name: 'Restaurante & Lounge Gourmet', icon: '🍴', desc: 'Pratos tradicionais refinados e cocktails' },
-    { id: 'eventos', name: 'Casa 300 — Salão de Festas', icon: '🎉', desc: 'O seu casamento ou banquete de sonho' },
-    { id: 'conferencia', name: 'Casa 300 — Sala de Conferência', icon: '💼', desc: 'Infraestrutura audiovisual de alto nível' },
-    { id: 'ginasio', name: 'Ginásio V119 — Treino', icon: '💪', desc: 'Planos mensais e acompanhamento personalizado' },
-    { id: 'barbearia', name: 'Barbearia — Marcação Mensal', icon: '✂️', desc: 'Corte degradê e rituais com toalha quente' },
-    { id: 'salao', name: 'Salão de Beleza & Estética', icon: '🌸', desc: 'Tratamentos dermocosméticos avançados' }
+    { id: 'hotel', name: 'Hotelaria - Quarto Deluxe 4★', icon: Building2, desc: 'Conforto e sofisticação no Zango' },
+    { id: 'gastronomia', name: 'Restaurante & Lounge Gourmet', icon: Coffee, desc: 'Pratos tradicionais refinados e cocktails' },
+    { id: 'eventos', name: 'Casa 300 — Salão de Festas', icon: CalendarDays, desc: 'O seu casamento ou banquete de sonho' },
+    { id: 'conferencia', name: 'Casa 300 — Sala de Conferência', icon: Briefcase, desc: 'Infraestrutura audiovisual de alto nível' },
+    { id: 'ginasio', name: 'Ginásio V119 — Treino', icon: Dumbbell, desc: 'Planos mensais e acompanhamento personalizado' },
+    { id: 'barbearia', name: 'Barbearia — Marcação Mensal', icon: Scissors, desc: 'Corte degradê e rituais com toalha quente' },
+    { id: 'salao', name: 'Salão de Beleza & Estética', icon: Sparkles, desc: 'Tratamentos dermocosméticos avançados' }
   ];
+
+  const SelectedServiceIcon = servicesList.find(s => s.id === formData.serviceType)?.icon || Sparkles;
 
   return (
     <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-black-deep/95 backdrop-blur-md">
@@ -174,8 +176,8 @@ export default function BookingFlow({ isOpen, onClose, initialService = 'hotel' 
                         : 'bg-neutral-900/60 border-neutral-700/50 hover:border-gold/50 hover:bg-neutral-800/40'
                     }`}
                   >
-                    <span className="text-2xl mr-3 bg-black-deep/60 w-10 h-10 rounded-lg flex items-center justify-center border border-gold/10 group-hover:border-gold/30">
-                      {srv.icon}
+                    <span className="text-neutral-300 mr-3 bg-black-deep/60 w-10 h-10 rounded-lg flex items-center justify-center border border-gold/10 group-hover:border-gold/30">
+                      <srv.icon className="w-5 h-5 text-gold" />
                     </span>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between">
@@ -199,7 +201,7 @@ export default function BookingFlow({ isOpen, onClose, initialService = 'hotel' 
             <div className="space-y-4">
               <div className="p-3.5 bg-neutral-900/80 rounded-xl border border-gold/15 flex items-center mb-1">
                 <span className="text-xl mr-3">
-                  {servicesList.find(s => s.id === formData.serviceType)?.icon || '✨'}
+                  <SelectedServiceIcon className="w-6 h-6 text-gold" />
                 </span>
                 <div>
                   <span className="text-neutral-400 text-[10px] uppercase tracking-widest block font-medium">Serviço Selecionado:</span>
