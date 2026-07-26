@@ -272,7 +272,33 @@ export default function App() {
 
   // Pre-configured gallery list — fotos reais do espaço Kapandula
   const premiumGallery = [
-    // Hotel
+    // Hotel - Quartos & Suítes Deluxe
+    { url: '/images/quarto-suite-deluxe-1.png', title: 'Suíte Deluxe Kapandula — Conforto Premium 4★', tag: 'Hotel' },
+    { url: '/images/quarto-suite-deluxe-2.png', title: 'Quarto Deluxe com Cama King-Size Ortopédica', tag: 'Hotel' },
+    { url: '/images/quarto-suite-deluxe-3.png', title: 'Quarto Clássico Kapandula — Elegância Envolvente', tag: 'Hotel' },
+    { url: '/images/quarto-suite-deluxe-4.png', title: 'Suíte Premium com Vista Exclusiva', tag: 'Hotel' },
+    { url: '/images/quarto-suite-deluxe-5.png', title: 'Quarto Executivo Kapandula — Sofisticação Total', tag: 'Hotel' },
+    { url: '/images/quarto-suite-deluxe-6.png', title: 'Acomodação de Luxo com Acabamento Premium', tag: 'Hotel' },
+    { url: '/images/quarto-suite-deluxe-7.png', title: 'Quarto Deluxe Kapandula — Ar Condicionado Inteligente', tag: 'Hotel' },
+    { url: '/images/quarto-suite-deluxe-8.png', title: 'Suite Executiva com Secretária de Trabalho', tag: 'Hotel' },
+    { url: '/images/quarto-suite-deluxe-9.png', title: 'Quarto Kapandula — Ambiente Climatizado Silencioso', tag: 'Hotel' },
+    { url: '/images/quarto-suite-deluxe-10.png', title: 'Suíte Premium Kapandula — Conforto Acústico', tag: 'Hotel' },
+    { url: '/images/quarto-suite-deluxe-11.png', title: 'Quarto Deluxe com Wi-Fi Ultra-Veloz', tag: 'Hotel' },
+    { url: '/images/quarto-suite-deluxe-12.png', title: 'Suite de Luxo Kapandula — Experiência 5 Estrelas', tag: 'Hotel' },
+    { url: '/images/quarto-suite-deluxe-13.png', title: 'Quarto Premium com Casa de Banho Privativa', tag: 'Hotel' },
+    { url: '/images/quarto-suite-deluxe-14.png', title: 'Suite Deluxe Kapandula — Duche de Massagem', tag: 'Hotel' },
+    { url: '/images/quarto-suite-deluxe-15.png', title: 'Quarto Executivo com Frigobar Premium', tag: 'Hotel' },
+    { url: '/images/quarto-suite-deluxe-16.png', title: 'Acomodação Deluxe Kapandula — Tecnologia 4★', tag: 'Hotel' },
+    { url: '/images/quarto-suite-deluxe-17.png', title: 'Quarto de Luxo com Cofre Eletrónico', tag: 'Hotel' },
+    { url: '/images/quarto-suite-deluxe-18.png', title: 'Suite Premium Kapandula — Pequeno-Almoço Executivo', tag: 'Hotel' },
+    { url: '/images/quarto-suite-deluxe-19.png', title: 'Quarto Kapandula — Televisão Satélite DSTV/Unitel', tag: 'Hotel' },
+    { url: '/images/quarto-suite-deluxe-20.png', title: 'Suite Executiva — Apoio de Quarto 24 Horas', tag: 'Hotel' },
+    { url: '/images/quarto-suite-deluxe-21.png', title: 'Quarto Deluxe Kapandula — Refinamento Premium', tag: 'Hotel' },
+    { url: '/images/quarto-suite-deluxe-22.png', title: 'Suite de Luxo com Acabamentos Premium', tag: 'Hotel' },
+    { url: '/images/quarto-suite-deluxe-23.png', title: 'Quarto Premium Kapandula — Conforto Total', tag: 'Hotel' },
+    { url: '/images/quarto-suite-deluxe-24.png', title: 'Acomodação Executiva — Experiência Luxuosa', tag: 'Hotel' },
+    { url: '/images/quarto-suite-deluxe-25.png', title: 'Suite Deluxe Kapandula — Hospitalidade 4★', tag: 'Hotel' },
+    // Hotel - Instalações Gerais
     { url: '/images/piscina-kapandula.png', title: 'Piscina Kapandula — Assinatura Exclusiva em Azulejo', tag: 'Hotel' },
     { url: '/images/esplanada-piscina.png', title: 'Esplanada Premium junto à Piscina', tag: 'Hotel' },
     { url: '/images/kapandula-fachada.png', title: 'Entrada Principal Kapandula Hotel', tag: 'Hotel' },

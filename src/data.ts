@@ -8,7 +8,7 @@ export const BRANDS: BrandInfo[] = [
     description: 'Um novo conceito de sofisticação hoteleira no Zango 8. Oferecemos quartos de alto padrão, executive lounges, salas de reuniões equipadas e uma gastronomia de fusão internacional e africana irresistível.',
     symbol: 'Hotel',
     stars: 4,
-    highlightImage: '/images/piscina-kapandula.png'
+    highlightImage: '/images/quarto-suite-deluxe-2.png'
   },
   {
     id: 'eventos',
@@ -44,7 +44,7 @@ export const SERVICES: ServiceDetailItem[] = [
     title: 'Suítes Deluxe & Quartos Clássicos',
     subtitle: 'Acomodação premium 4 estrelas no Zango 8 — 25.000 Kz / Noite',
     description: 'Quartos projetados com refinamento e conforto acústico. Camas king-size ortopédicas de qualidade superior, secretária de trabalho, ar-condicionado silencioso, frigobar abastecido com bebidas locais e importadas, casa de banho privativa com duche de massagem e Wi-Fi de alta velocidade ultra-veloz.',
-    imageUrl: '/images/kapandula-fachada.png',
+    imageUrl: '/images/quarto-suite-deluxe-1.png',
     features: ['Pequeno-almoço executivo incluído', 'Apoio de Quarto 24 Horas', 'Ar condicionado inteligente', 'Cofre eletrónico digital', 'Televisão por satélite Unitel/DSTV'],
     pricingRange: 'A partir de 25.000 Kz / Noite (30 USD para clientes estrangeiros)'
   },
